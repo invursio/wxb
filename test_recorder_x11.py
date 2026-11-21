@@ -99,6 +99,19 @@ class RealRecorderX11Tests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stderr.strip(), "")
 
+    def test_mp4_capture_stop_and_playback(self):
+        self.assertTrue(self.service.set_recorder_settings(container="mp4")[0])
+        output = self.start_and_stop(1.0)
+        self.assertEqual(output.suffix, ".mp4")
+        self.assertTrue(output.exists(), output)
+        self.assertGreater(output.stat().st_size, 0)
+        self.assertEqual(output.stat().st_mode & 0o777, 0o600)
+        result = subprocess.run(
+            [self.caps["ffmpeg"], "-v", "error", "-i", str(output),
+             "-f", "null", "-"], capture_output=True, text=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr.strip(), "")
+
     def test_repeated_start_stop_uses_unique_files(self):
         outputs = [self.start_and_stop(0.7) for _ in range(3)]
         self.assertEqual(len({str(path) for path in outputs}), 3)

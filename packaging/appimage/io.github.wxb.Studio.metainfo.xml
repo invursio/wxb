@@ -25,6 +25,11 @@
   <project_license>MIT</project_license>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="0.3.0" date="2026-11-21">
+      <description>
+        <p>Add selectable MP4 recording output alongside recoverable Matroska.</p>
+      </description>
+    </release>
     <release version="0.2.0" date="2026-11-21">
       <description>
         <p>Add global Hide UI and recording toggle hotkeys plus persistent clicker session totals.</p>

@@ -26,7 +26,7 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 APP_DIR = Path(__file__).resolve().parent
-STUDIO_VERSION = "4.1"
+STUDIO_VERSION = "4.2"
 CLICKER_STATS_VERSION = 1
 CLICKER_STATS_MAX = 10 ** 12
 
@@ -205,7 +205,7 @@ DEFAULT_SETTINGS: dict[str, Any] = {
         "source": "screen", "region_x": 0, "region_y": 0,
         "region_w": 0, "region_h": 0, "window_id": "",
         "resolution": "source", "fps": 30, "quality": "balanced",
-        "encoder": "auto", "cursor": True,
+        "encoder": "auto", "container": "mkv", "cursor": True,
         "save_dir": (str(screen_recorder.default_save_dir())
                      if screen_recorder is not None else ""),
         "mic": False, "mic_device": "", "desktop_audio": False,

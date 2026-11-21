@@ -55,7 +55,7 @@ from wxb_studio_service import (  # noqa: E402
     x11_set_window_above,
     x11_window_geometry,
 )
-from wxb_recorder import SOURCE_CHOICES  # noqa: E402
+from wxb_recorder import CONTAINER_CHOICES, CONTAINER_SUFFIX, SOURCE_CHOICES  # noqa: E402
 import wxb_input_lab as input_lab  # noqa: E402
 from wxb_overlay import InputOverlayWindow  # noqa: E402
 
@@ -3584,6 +3584,16 @@ class WxbWindow(Adw.ApplicationWindow):
             ["Low · fastest", "Balanced", "High · largest"])
         self.ui["rec_quality"].add_css_class("wxb-drop")
         self._rec_quality_values = ["low", "balanced", "high"]
+        self._rec_container_values = list(CONTAINER_CHOICES)
+        self.ui["rec_container"] = Gtk.DropDown.new_from_strings(
+            ["Matroska (.mkv)", "MP4 (.mp4)"])
+        self.ui["rec_container"].add_css_class("wxb-drop")
+        self.ui["rec_container"].connect(
+            "notify::selected", lambda *_: self._recorder_changed())
+        self.ui["rec_format_hint"] = label(
+            "Matroska is recoverable if capture is interrupted. MP4 is "
+            "widely playable and finalized on a normal stop.",
+            "wxb-hint", wrap=True, max_width=64)
         self._sync_recorder_encoders(caps, snap["settings"].get("encoder"))
         for widget in (self.ui["rec_resolution"], self.ui["rec_fps"],
                        self.ui["rec_quality"], self.ui["rec_encoder"]):
@@ -3611,7 +3621,7 @@ class WxbWindow(Adw.ApplicationWindow):
             tooltip="Open the recording folder in your file manager",
             on_click=self._open_recording_folder)
         self.ui["rec_dir_hint"] = label(
-            "New timestamped .mkv files; existing files are never overwritten.",
+            "New timestamped files; existing files are never overwritten.",
             "wxb-hint", wrap=True, max_width=64)
         self.ui["rec_legacy_note"] = label(
             "Older recordings are preserved separately: %s" %
@@ -3674,9 +3684,11 @@ class WxbWindow(Adw.ApplicationWindow):
                self._mini_field("Quality / load", self.ui["rec_quality"]),
                vertical=False, spacing=8),
             el(self._mini_field("Encoder", self.ui["rec_encoder"]),
-               el(label("Show cursor", "wxb-label"), self.ui["rec_cursor"],
-                  vertical=False, spacing=8),
-               vertical=False, spacing=12),
+               self._mini_field("Format", self.ui["rec_container"]),
+               vertical=False, spacing=8),
+            el(label("Show cursor", "wxb-label"), self.ui["rec_cursor"],
+               vertical=False, spacing=8),
+            self.ui["rec_format_hint"],
             self.ui["rec_dir"],
             el(self.ui["rec_browse"], self.ui["rec_open"],
                vertical=False, spacing=8),
@@ -3820,6 +3832,10 @@ class WxbWindow(Adw.ApplicationWindow):
             "encoder": (self._rec_encoder_values[encoder_i]
                         if 0 <= encoder_i < len(self._rec_encoder_values)
                         else "auto"),
+            "container": (self._rec_container_values[
+                self.ui["rec_container"].get_selected()]
+                if 0 <= self.ui["rec_container"].get_selected()
+                < len(self._rec_container_values) else "mkv"),
             "cursor": bool(self.ui["rec_cursor"].get_active()),
             "save_dir": self.ui["rec_dir"].get_text().strip(),
             "mic": bool(self.ui["rec_mic"].get_active()),
@@ -3972,6 +3988,17 @@ class WxbWindow(Adw.ApplicationWindow):
                     self._rec_quality_values.index(settings.get("quality", "balanced")))
             except ValueError:
                 self.ui["rec_quality"].set_selected(1)
+            try:
+                self.ui["rec_container"].set_selected(
+                    self._rec_container_values.index(
+                        settings.get("container", "mkv")))
+            except ValueError:
+                self.ui["rec_container"].set_selected(0)
+            container = settings.get("container", "mkv")
+            suffix = CONTAINER_SUFFIX.get(container, ".mkv")
+            self.ui["rec_dir_hint"].set_text(
+                "New timestamped %s files; existing files are never "
+                "overwritten." % suffix)
             if force:
                 self._sync_recorder_encoders(caps, settings.get("encoder", "auto"))
                 self._refresh_recorder_devices(force=False)
@@ -4045,7 +4072,8 @@ class WxbWindow(Adw.ApplicationWindow):
                        self.ui["rec_region_y"], self.ui["rec_region_w"],
                        self.ui["rec_region_h"], self.ui["rec_resolution"],
                        self.ui["rec_fps"], self.ui["rec_quality"],
-                       self.ui["rec_encoder"], self.ui["rec_cursor"],
+                       self.ui["rec_encoder"], self.ui["rec_container"],
+                       self.ui["rec_cursor"],
                        self.ui["rec_dir"], self.ui["rec_browse"],
                        self.ui["rec_mic"], self.ui["rec_mic_device"],
                        self.ui["rec_desktop_audio"],

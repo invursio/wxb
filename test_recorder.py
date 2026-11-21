@@ -55,6 +55,15 @@ class SettingsTests(unittest.TestCase):
         bad = recorder.normalize_settings({"window_id": "0xNOTHEX"})
         self.assertEqual(bad["window_id"], "")
 
+    def test_container_defaults_to_mkv_and_accepts_mp4(self):
+        self.assertEqual(recorder.normalize_settings({})["container"], "mkv")
+        self.assertEqual(
+            recorder.normalize_settings({"container": "MP4"})["container"],
+            "mp4")
+        self.assertEqual(
+            recorder.normalize_settings({"container": "avi"})["container"],
+            "mkv")
+
     def test_choice_limits(self):
         for value in recorder.SOURCE_CHOICES:
             self.assertEqual(recorder.normalize_settings({"source": value})["source"], value)
@@ -184,6 +193,13 @@ class CommandTests(unittest.TestCase):
                       high[high.index("-vf") + 1])
         self.assertIn("60", high)
 
+    def test_mp4_container_uses_the_mp4_muxer(self):
+        argv = self.build(container="mp4")
+        self.assertEqual(argv[-3:-1], ["-f", "mp4"])
+        self.assertTrue(argv[-1].endswith("out.mkv"))
+        matroska = self.build()
+        self.assertEqual(matroska[-3:-1], ["-f", "matroska"])
+
     def test_encoder_requires_detected_hardware(self):
         with self.assertRaises(recorder.RecorderError):
             self.build(encoder="vaapi")
@@ -215,6 +231,8 @@ class OutputSecurityTests(unittest.TestCase):
                 second = recorder._unique_output(root)
             self.assertEqual(second.name, "WXB-TEST-2.mkv")
             self.assertEqual(first.read_bytes(), b"existing")
+            self.assertEqual(recorder._unique_output(root, ".mp4").suffix,
+                             ".mp4")
 
     def test_symlinked_directory_is_refused(self):
         with tempfile.TemporaryDirectory() as name:
@@ -316,6 +334,14 @@ class LifecycleTests(unittest.TestCase):
         self.assertIn(signal.SIGINT, self.proc.signals)
         self.assertEqual(rec.snapshot()["state"], "idle")
         self.assertEqual(rec.snapshot()["probe"]["width"], 1920)
+
+    def test_mp4_recording_reserves_mp4_output(self):
+        self.settings["container"] = "mp4"
+        rec = self.make()
+        self.addCleanup(rec.shutdown)
+        self.assertTrue(rec.start()[0])
+        self.assertTrue(self.command[-1].endswith(".mp4"))
+        self.assertTrue(rec.stop(wait=True)[0])
 
     def test_no_output_is_reported_not_hidden(self):
         rec = self.make(make_file=False)

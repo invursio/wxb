@@ -48,8 +48,12 @@ X11 session because pynput uses XRecord.
 
 ---
 
-## New in 4.1
+## New in 4.2
 
+- **MP4 recordings** — the Recorder now has a **Format** selector. Choose
+  **MP4 (.mp4)** for a widely playable file, or keep **Matroska (.mkv)** for
+  crash recovery. MP4 is finalized when you stop normally; Matroska remains
+  the default because a hard interruption can leave an unfinished MP4.
 - **Ctrl+Alt+H** toggles **Hide UI** from anywhere, without stopping an engine.
 - **Ctrl+Alt+V** starts or finishes a screen recording; the existing
   **Ctrl+Alt+X** still stops a running capture only.
@@ -115,10 +119,10 @@ immediately, including the wrap and the sidebar toggle.
   stop hotkeys. Recording and playback run in `StudioService`, so switching
   tabs does not stop them. See **The Macros tab** below.
 - **Recorder** — a sixth sidebar tab captures the X11 screen, one window or a
-  rectangle to a recoverable local `.mkv` with FFmpeg. It has source,
-  resolution, FPS, quality/load, cursor, save-folder, microphone and desktop
-  audio controls; pause/resume; elapsed time and a live indicator; and a
-  configurable stop hotkey. Capture runs in the service, not the GTK thread,
+  rectangle to a local `.mkv` or `.mp4` with FFmpeg. It has source,
+  resolution, FPS, quality/load, cursor, format, save-folder, microphone and
+  desktop audio controls; pause/resume; elapsed time and a live indicator; and
+  a configurable stop hotkey. Capture runs in the service, not the GTK thread,
   so switching tabs does not stop it. Files are timestamped, never overwritten,
   finalized on stop/exit and written `0600`. See **The Recorder tab** below.
 - **Privacy** — the header eye hides CPS/CDC, delays, slots and key hints,
@@ -378,12 +382,13 @@ sends commands, so changing tabs does not stop a recording.
   resizing the window after capture starts is not followed. A closed or
   off-screen window is rejected with a message rather than producing an empty
   file.
-* **Output** — timestamped `WXB-YYYYMMDD-HHMMSS.mkv` files in the chosen folder
-  (default `~/Videos/WXB`). Matroska keeps a partial file recoverable if the
-  process is interrupted. Each output path is reserved with `O_EXCL` at mode
-  `0600` before FFmpeg starts, so an existing file cannot be chosen; FFmpeg's
-  `-y` is limited to that newly reserved file. Newly created WXB folders use
-  `0700` where the filesystem allows it. The folder is created on
+* **Output** — timestamped `WXB-YYYYMMDD-HHMMSS.mkv` or `.mp4` files in the
+  chosen folder (default `~/Videos/WXB`). **Format** selects Matroska (the
+  default, recoverable if the process is interrupted) or MP4 (widely playable,
+  finalized on a normal stop). Each output path is reserved with `O_EXCL` at
+  mode `0600` before FFmpeg starts, so an existing file cannot be chosen;
+  FFmpeg's `-y` is limited to that newly reserved file. Newly created WXB
+  folders use `0700` where the filesystem allows it. The folder is created on
   start, not silently somewhere else.
 * **Video controls** — source resolution (or 720p/1080p/1440p), 15/30/60 FPS,
   Low/Balanced/High quality presets (x264 `ultrafast`/`veryfast`/`medium`, CRF
@@ -398,14 +403,16 @@ sends commands, so changing tabs does not stop a recording.
   after waking the process.
 * **Audio** — independent microphone and desktop-audio switches with device
   menus. Desktop audio uses a Pulse/PipeWire monitor source; both are mixed to
-  one AAC track at 160 kbit/s in the same `.mkv`. If no monitor source exists,
-  the start is refused with an explanation. Audio permissions come from the
-  user's Pulse/PipeWire session; WXB never asks for `sudo`.
+  one AAC track at 160 kbit/s in the same Matroska or MP4 container. If no
+  monitor source exists, the start is refused with an explanation. Audio
+  permissions come from the user's Pulse/PipeWire session; WXB never asks for
+  `sudo`.
 * **Stop and recovery** — the page button, the configurable `Ctrl+Alt+X` hotkey,
   `F9`/Stop everything, or closing WXB stops capture. FFmpeg gets `SIGINT` so
-  the Matroska trailer is written; after 8 seconds it gets `SIGTERM`, then a
-  bounded kill. The final output is probed and shown with dimensions, FPS and
-  duration. A locked desktop, a disk below 64 MiB free, a vanished process, a
+  the container trailer is written; after 8 seconds it gets `SIGTERM`, then a
+  bounded kill. Matroska remains recoverable after an abrupt exit; MP4 should
+  be stopped through WXB so its index is finalized. The final output is probed
+  and shown with dimensions, FPS and duration. A locked desktop, a disk below 64 MiB free, a vanished process, a
   denied device or an encoder error stops with a visible reason, never a
   silent empty success. `StudioService.shutdown()` joins the monitor and saves
   the partial file.

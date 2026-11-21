@@ -375,6 +375,26 @@ class UiFeatureTests(unittest.TestCase):
             self.win._refresh_capability_hints()
         self.assertIn(warning, self.win.ui["portable_hint"].get_text())
 
+    def test_recorder_mp4_format_persists_from_the_ui(self):
+        window = self.win
+        window.show_page("recorder")
+        pump(0.1)
+        window.ui["rec_container"].set_selected(1)
+        pump(0.1)
+        self.assertEqual(
+            window.service.settings["recorder"]["container"], "mp4")
+        reloaded = StudioService(path=window.service.path)
+        try:
+            self.assertEqual(reloaded.settings["recorder"]["container"],
+                             "mp4")
+            snap = reloaded.recorder_snapshot()
+            self.assertEqual(snap["settings"]["container"], "mp4")
+            self.assertIn("MP4", snap["limit"])
+        finally:
+            reloaded.shutdown()
+        window.ui["rec_container"].set_selected(0)
+        pump(0.1)
+
     def test_window_geometry_and_above_use_xlib_without_tools(self):
         window = self.win
         xid = window._x11_window_id()

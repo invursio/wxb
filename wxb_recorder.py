@@ -3,7 +3,7 @@
 
 The GTK window never owns the capture process.  This module builds a bounded
 FFmpeg X11Grab job, keeps the child off the UI thread, monitors disk/session
-conditions, and finalizes a recoverable Matroska file on stop.  Native Wayland
+conditions, and finalizes a Matroska or MP4 file on stop.  Native Wayland
 capture is reported separately: the portal can broker permission, but this
 build does not claim a capture backend when no tested PipeWire path exists.
 
@@ -25,6 +25,9 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 RECORDING_SUFFIX = ".mkv"
+CONTAINER_CHOICES = ("mkv", "mp4")
+CONTAINER_SUFFIX = {"mkv": ".mkv", "mp4": ".mp4"}
+CONTAINER_FORMAT = {"mkv": "matroska", "mp4": "mp4"}
 SOURCE_CHOICES = ("screen", "window", "region")
 RESOLUTION_CHOICES = ("source", "720p", "1080p", "1440p")
 FPS_CHOICES = (15, 30, 60)
@@ -97,6 +100,7 @@ def normalize_settings(raw: Mapping[str, Any] | None) -> dict[str, Any]:
         "fps": fps,
         "quality": _choice(source.get("quality"), QUALITY_CHOICES, "balanced"),
         "encoder": _choice(source.get("encoder"), ENCODER_CHOICES, "auto"),
+        "container": _choice(source.get("container"), CONTAINER_CHOICES, "mkv"),
         "cursor": bool(source.get("cursor", True)),
         "save_dir": save_dir,
         "mic": bool(source.get("mic", False)),
@@ -357,7 +361,9 @@ def window_geometry(window_id: str,
             values.get("Width", 0), values.get("Height", 0))
 
 
-def _unique_output(save_dir: Any) -> Path:
+def _unique_output(save_dir: Any,
+                   suffix: str = RECORDING_SUFFIX) -> Path:
+    suffix = suffix if suffix in CONTAINER_SUFFIX.values() else RECORDING_SUFFIX
     raw = str(save_dir or "").strip()
     target = Path(raw).expanduser() if raw else default_save_dir()
     if not target.is_absolute():
@@ -373,10 +379,10 @@ def _unique_output(save_dir: Any) -> Path:
     if not os.access(target, os.W_OK | os.X_OK):
         raise RecorderError("The recording destination is not writable.")
     base = time.strftime("WXB-%Y%m%d-%H%M%S")
-    candidate = target / (base + RECORDING_SUFFIX)
+    candidate = target / (base + suffix)
     counter = 2
     while candidate.exists() or candidate.is_symlink():
-        candidate = target / ("%s-%d%s" % (base, counter, RECORDING_SUFFIX))
+        candidate = target / ("%s-%d%s" % (base, counter, suffix))
         counter += 1
     return candidate
 
@@ -504,8 +510,12 @@ def build_x11_command(settings: Mapping[str, Any], caps: Mapping[str, Any],
                  "-cq", str(quality["crf"]), "-pix_fmt", "yuv420p"]
     if audio_inputs:
         argv += ["-c:a", "aac", "-b:a", "160k"]
+    container = clean["container"]
+    # Plain MP4 is finalized by FFmpeg on the graceful SIGINT stop.  Do not
+    # add +faststart: relocating the moov atom can exceed the bounded stop
+    # grace on a long recording, which would risk cutting the finalize short.
     argv += ["-metadata", "title=WXB screen recording",
-             "-f", "matroska", str(output)]
+             "-f", CONTAINER_FORMAT[container], str(output)]
     return argv
 
 
@@ -639,12 +649,19 @@ class Recorder:
             "settings": settings,
             "capabilities": caps,
             "audio_devices": list_audio_devices(),
-            "limit": ("Matroska .mkv is recoverable if FFmpeg is interrupted; "
-                      "no file is ever overwritten."),
+            "limit": (("MP4 is finalized when you stop normally; an "
+                       "interrupted process can leave an unplayable file. "
+                       "Matroska stays recoverable and is the default.")
+                      if settings["container"] == "mp4" else
+                      ("Matroska .mkv is recoverable if FFmpeg is interrupted; "
+                       "no file is ever overwritten.")),
         }
 
     def _prepare(self) -> Path:
-        output = _unique_output(self.settings().get("save_dir"))
+        settings = self.settings()
+        output = _unique_output(
+            settings.get("save_dir"),
+            CONTAINER_SUFFIX.get(settings.get("container"), RECORDING_SUFFIX))
         try:
             fd = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
             os.close(fd)
