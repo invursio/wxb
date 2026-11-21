@@ -1021,6 +1021,42 @@ class LifecycleHardeningTests(unittest.TestCase):
             self.assertFalse(self.service.ac_running)
         self.assertGreaterEqual(self.sink.clicks, 5)
 
+    def test_clicker_session_totals_persist_beside_settings(self):
+        ok, message = self.service.start_clicker(250, 50, "left")
+        self.assertTrue(ok, message)
+        self.assertTrue(self.wait_for(lambda: self.sink.clicks > 0))
+        self.service.stop_clicker()
+        stats = self.service.clicker_stats_snapshot()
+        self.assertGreater(stats["total_clicks"], 0)
+        self.assertGreaterEqual(stats["sessions"], 1)
+        self.assertGreater(stats["best_session_clicks"], 0)
+        stats_path = self.path.parent / "clicker-stats.json"
+        self.assertTrue(stats_path.is_file())
+        self.assertEqual(stat_mode := stat.S_IMODE(
+            stats_path.stat().st_mode), 0o600, stat_mode)
+        reloaded = svc.StudioService(path=self.path)
+        try:
+            self.assertEqual(reloaded.clicker_stats_snapshot()["total_clicks"],
+                             stats["total_clicks"])
+        finally:
+            reloaded.shutdown()
+
+    def test_privacy_hotkey_bridges_to_the_window_and_degrades_cleanly(self):
+        calls = []
+
+        def toggle():
+            calls.append(True)
+            return True, "Interface values hidden."
+
+        self.service.set_privacy_toggle(toggle)
+        ok, message = self.service.handle_hotkey("toggle_privacy")
+        self.assertTrue(ok, message)
+        self.assertEqual(calls, [True])
+        self.service.set_privacy_toggle(None)
+        ok, message = self.service.handle_hotkey("toggle_privacy")
+        self.assertFalse(ok)
+        self.assertIn("window", message)
+
     def test_stopping_idle_engines_is_safe_and_idempotent(self):
         for _ in range(3):
             self.service.stop_clicker()

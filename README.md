@@ -48,6 +48,22 @@ X11 session because pynput uses XRecord.
 
 ---
 
+## New in 4.1
+
+- **Ctrl+Alt+H** toggles **Hide UI** from anywhere, without stopping an engine.
+- **Ctrl+Alt+V** starts or finishes a screen recording; the existing
+  **Ctrl+Alt+X** still stops a running capture only.
+- **Lifetime clicker stats** — completed runs add to a private
+  `clicker-stats.json` beside `studio.json`, and the clicker page shows the
+  all-time total next to the current run. The file is written atomically with
+  mode `0600`.
+
+Both new hotkeys are rebindable in **Settings → Keybindings**, exactly like the
+original actions. Privacy still hides the counters, including the lifetime
+total.
+
+---
+
 ## Design language
 
 Warm graphite canvas, one rose signal, generous negative space. Inter Display
@@ -77,8 +93,8 @@ immediately, including the wrap and the sidebar toggle.
 
 ## Features
 
-- **Overview** — system state, live engine counts, session clicks, alt count and
-  Sober launch.
+- **Overview** — system state, live engine counts, session clicks, lifetime
+  clicker totals, alt count and Sober launch.
 - **Automation** — independent clicker, rotation and SOCD controls with
   inline errors, value locks and SOCD presets; exact CPS/CDC entry stays beside
   the existing scales. The rotation has a persisted master switch that starts
@@ -155,18 +171,24 @@ immediately, including the wrap and the sidebar toggle.
   recorder is `Ctrl 6`.
 - **Global hotkeys** — defaults are `F6` clicker, `F7` rotation, `F8` SOCD,
   `F9` stop all and release inputs, `Ctrl+Shift+F10` cycle Cordial tiling,
-  `Ctrl+Alt+X` stop and save a screen recording, and macro controls
+  `Ctrl+Alt+H` hide/show interface values, `Ctrl+Alt+V` start/stop screen
+  recording, `Ctrl+Alt+X` stop and save a running recording, and macro controls
   `Ctrl+Alt+R` record/stop, `Ctrl+Alt+P` play/stop and `Ctrl+Alt+S` stop macro
   only. **ESC** remains the reserved emergency stop in
   the window and through the global listener. Every action can be rebound to
   any Ctrl/Shift/Alt/Cmd combination,
   F1–F20, letter, digit or named key; ESC itself cannot be captured. Buttons
   remain usable if the listener cannot bind.
+- **Clicker session totals** — a completed run adds its click count to a
+  private lifetime total and session history counters, shown on the Auto
+  Clicker status strip. The file is adjacent to the active settings file and
+  never contains pointer coordinates.
 - **Single instance** — a second launch is handed to the running window, which
   is raised and focused instead of starting a second hotkey listener.
   A per-config clicker file lock also prevents two windows or a
-  `WXB_STANDALONE` process from clicking at the same time; the kernel drops
-  the lock if WXB is killed, so a crash cannot leave a stale lock.
+  `WXB_STANDALONE` process from clicking at the same time; the kernel drops the
+  lock if WXB is killed, so a crash cannot leave a stale lock.
+
 - **Named configs** — save and load complete snapshots of clicker, rotation,
   appearance and keybindings under `~/.config/wxb/configs/`.
 - **Full clicker range** — CPS accepts `0.01–1000` and CDC/hold accepts

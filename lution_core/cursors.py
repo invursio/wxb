@@ -283,7 +283,7 @@ def _download_pack():
         pass
     request = urllib.request.Request(
         PACK_URL, headers={
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) WXB/4.0"})
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) WXB/4.1"})
     try:
         with urllib.request.urlopen(request, timeout=12) as response:
             data = response.read(MAX_PACK_BYTES + 1)

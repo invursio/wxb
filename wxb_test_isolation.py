@@ -158,8 +158,10 @@ def collect_paths():
     _add_path(out, "config.default_settings", svc.settings_path())
     default_service = svc.StudioService()
     _add_path(out, "config.default_service", default_service.path)
+    _add_path(out, "config.default_clicker_stats", default_service.stats_path)
     service = svc.StudioService(path=TEST_HOME / "guard-studio.json")
     _add_path(out, "config.service", service.path)
+    _add_path(out, "config.clicker_stats", service.stats_path)
     _add_path(out, "config.config_dir", service.config_dir())
     _add_path(out, "config.flag_profile_dir", service.flag_profile_dir())
     _add_path(out, "config.flag_profile",

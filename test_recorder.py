@@ -440,11 +440,20 @@ class ServiceWiringTests(unittest.TestCase):
     def test_defaults_and_stop_hotkey_are_wired(self):
         self.assertEqual(self.service.settings["hotkeys"]["stop_recording"],
                          "ctrl+alt+x")
+        self.assertEqual(self.service.settings["hotkeys"]["toggle_recording"],
+                         "ctrl+alt+v")
         self.assertEqual(self.service.settings["recorder"]["source"], "screen")
         self.assertTrue(self.service.start_recording()[0])
         self.assertTrue(self.service.snapshot()["recorder"]["running"])
         self.assertFalse(self.service.set_recorder_settings(fps=60)[0])
         self.assertTrue(self.service.stop_recording(wait=True)[0])
+
+    def test_toggle_recording_hotkey_starts_and_finishes_capture(self):
+        self.assertTrue(self.service.handle_hotkey("toggle_recording")[0])
+        self.assertTrue(self.service.recorder_snapshot()["running"])
+        self.assertTrue(self.service.handle_hotkey("toggle_recording")[0])
+        self.assertFalse(self.service.recorder_snapshot()["running"])
+        self.assertTrue(self.fake.stopped)
 
     def test_stop_all_and_hotkey_stop_the_recorder(self):
         self.assertTrue(self.service.start_recording()[0])

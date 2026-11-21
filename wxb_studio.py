@@ -1315,13 +1315,14 @@ class WxbWindow(Adw.ApplicationWindow):
 
     def _metric(self, icon_name, caption, value, sub):
         value_label = label(value, "wxb-metric-value")
+        sub_label = label(sub, "wxb-metric-sub", wrap=True, max_width=20)
         w = card(el(icon(icon_name, 16, "wxb-accent"),
                     label(caption, "wxb-label"),
                     vertical=False, spacing=8),
                  value_label,
-                 label(sub, "wxb-metric-sub", wrap=True, max_width=20),
+                 sub_label,
                  spacing=12)
-        return w, value_label
+        return w, value_label, sub_label
 
     def _reflow_grid(self, cards, max_cols=3):
         # A FlowBox wraps during allocation, so a 900px first allocation is
@@ -1427,13 +1428,13 @@ class WxbWindow(Adw.ApplicationWindow):
         status_card.add_css_class("wxb-status-bar")
         self.hero_status_card = status_card
 
-        m1, self.metric_engines = self._metric(
+        m1, self.metric_engines, _ = self._metric(
             "system-run-symbolic", "ENGINES", "0", "clicker · rotation · socd")
-        m2, self.metric_clicks = self._metric(
+        m2, self.metric_clicks, self.metric_clicks_sub = self._metric(
             "input-mouse-symbolic", "CLICKS", "0", "this session")
-        m3, self.metric_alts = self._metric(
+        m3, self.metric_alts, _ = self._metric(
             "view-list-symbolic", "ALTS", "0", "Cordial profiles")
-        m4, self.metric_state = self._metric(
+        m4, self.metric_state, _ = self._metric(
             "weather-clear-symbolic", "STATE", "Ready", "nothing held")
         metrics = self._reflow_grid([m1, m2, m3, m4], max_cols=4)
 
@@ -4075,16 +4076,25 @@ class WxbWindow(Adw.ApplicationWindow):
                     probe.get("fps"), float(probe.get("duration"))))
         self._set_error(self.ui["rec_error"], snap.get("error", ""))
         self._set_error(self.ui["rec_notice"], snap.get("notice", ""))
-        hotkey = display_hotkey(self.service.settings["hotkeys"].get(
-            "stop_recording", "")) or "not set"
-        conflicts = [HOTKEY_LABELS.get(key, key) for key, value
-                     in self.service.settings["hotkeys"].items()
-                     if key != "stop_recording"
-                     and normalize_hotkey(value) == normalize_hotkey(
-                         self.service.settings["hotkeys"].get("stop_recording", ""))]
+        hotkeys = self.service.settings["hotkeys"]
+        start_stop = display_hotkey(hotkeys.get("toggle_recording", "")) \
+            or "not set"
+        stop_only = display_hotkey(hotkeys.get("stop_recording", "")) \
+            or "not set"
+        conflicts = []
+        for action in ("toggle_recording", "stop_recording"):
+            canonical = normalize_hotkey(hotkeys.get(action, ""))
+            if not canonical:
+                continue
+            conflicts.extend(
+                HOTKEY_LABELS.get(key, key)
+                for key, value in hotkeys.items()
+                if key != action and normalize_hotkey(value) == canonical)
         self.ui["rec_hotkey"].set_text(
-            "Global stop: " + hotkey + " · F9 / Esc stop everything"
-            + (" · CONFLICT with %s; rebind in Settings" % ", ".join(conflicts)
+            "Global: start / stop " + start_stop + " · stop " + stop_only
+            + " · F9 / Esc stop everything"
+            + (" · CONFLICT with %s; rebind in Settings"
+               % ", ".join(dict.fromkeys(conflicts))
                if conflicts else ""))
         fps = int(settings.get("fps", 30) or 30)
         performance = (
@@ -5979,6 +5989,8 @@ class WxbWindow(Adw.ApplicationWindow):
     # ------------------------------------------------------------------ privacy
     def toggle_privacy(self):
         self.set_privacy(not self.privacy)
+        return True, ("Interface values hidden." if self.privacy
+                      else "Interface values shown.")
 
     def set_privacy(self, on):
         """Hide values without changing them or the running engines.
@@ -6182,6 +6194,10 @@ class WxbWindow(Adw.ApplicationWindow):
         if "metric_engines" in self.__dict__:
             self.metric_engines.set_text(str(active))
             self.metric_clicks.set_text(str(ac["clicks"]))
+            lifetime = int((ac.get("stats") or {}).get("total_clicks", 0))
+            self.metric_clicks_sub.set_text(
+                "this session" if self.privacy else
+                "this session · %d lifetime" % lifetime)
             self.metric_alts.set_text(str(len(alts["profiles"])))
             self.metric_state.set_text("Live" if active else "Ready")
         self.stop_btn.set_visible(active > 0)
@@ -6273,10 +6289,12 @@ class WxbWindow(Adw.ApplicationWindow):
                           "jitter": "jitter"}.get(mode, mode)
                 self.ui["ac_page_target"].set_text("Target · " + target)
                 clicks = int(ac.get("clicks", 0))
+                lifetime = int((ac.get("stats") or {}).get(
+                    "total_clicks", 0))
                 self.ui["ac_page_total"].set_text(
                     PRIVACY_MASK + " clicks" if self.privacy else
-                    "Total · %d click%s" % (
-                        clicks, "" if clicks == 1 else "s"))
+                    "Total · %d click%s · %d lifetime" % (
+                        clicks, "" if clicks == 1 else "s", lifetime))
                 if "ac_foreground" in self.ui:
                     foreground_ok = bool(
                         x11_capabilities()["foreground"]
@@ -6836,6 +6854,7 @@ class WxbApplication(Adw.Application):
                                 show_onboarding=self.show_onboarding,
                                 on_quit=self._window_closed,
                                 auto_scan=self.auto_scan)
+        self.service.set_privacy_toggle(self.window.toggle_privacy)
         if self.hotkeys:
             self.service.start_hotkeys()
         self.window.present()
@@ -6865,7 +6884,9 @@ class WxbApplication(Adw.Application):
             body="Ctrl K — search\nCtrl 1–7 — move between pages\n"
                  "Esc — close search, or stop every engine\n"
                  "F6 / F7 / F8 — clicker / rotation / SOCD\n"
-                 "F9 — stop every engine\nCtrl Q — quit",
+                 "F9 — stop every engine\n"
+                 "Ctrl+Alt+H — hide / show values\n"
+                 "Ctrl+Alt+V — start / stop recording\nCtrl Q — quit",
         )
         dialog.add_css_class("wxb-dialog")
         dialog.add_response("close", "Close")

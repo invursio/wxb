@@ -26,7 +26,9 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 APP_DIR = Path(__file__).resolve().parent
-STUDIO_VERSION = "4.0"
+STUDIO_VERSION = "4.1"
+CLICKER_STATS_VERSION = 1
+CLICKER_STATS_MAX = 10 ** 12
 
 # Gamescope is an opt-in launch effect: it adds a nested compositor, so the
 # shipped default stays off.  A settings value or the GameMode switch layers
@@ -125,6 +127,8 @@ HOTKEY_DEFAULTS = {
     "play_macro": "ctrl+alt+p",
     "stop_macro": "ctrl+alt+s",
     "stop_recording": "ctrl+alt+x",
+    "toggle_recording": "ctrl+alt+v",
+    "toggle_privacy": "ctrl+alt+h",
 }
 HOTKEY_LABELS = {
     "toggle_clicker": "Start / stop clicking",
@@ -136,6 +140,8 @@ HOTKEY_LABELS = {
     "play_macro": "Play / stop macro",
     "stop_macro": "Stop macro only",
     "stop_recording": "Stop screen recording",
+    "toggle_recording": "Start / stop screen recording",
+    "toggle_privacy": "Hide / show interface values",
 }
 HOTKEY_ACTIONS = {
     "toggle_clicker": "toggle_clicker",
@@ -147,6 +153,8 @@ HOTKEY_ACTIONS = {
     "play_macro": "toggle_macro_playback",
     "stop_macro": "stop_macro",
     "stop_recording": "stop_recording",
+    "toggle_recording": "toggle_recording",
+    "toggle_privacy": "toggle_privacy",
 }
 LEGACY_HOTKEY_ALIASES = {
     "f6": "toggle_clicker", "f7": "toggle_rotation",
@@ -1099,6 +1107,45 @@ def save_settings(data: Mapping[str, Any], path: str | os.PathLike | None = None
     return target
 
 
+def clicker_stats_path(settings_file: str | os.PathLike | None = None) -> Path:
+    """Session totals live beside the settings file they belong to."""
+    target = Path(settings_file) if settings_file else settings_path()
+    return target.with_name("clicker-stats.json")
+
+
+def normalize_clicker_stats(raw: Any) -> dict:
+    """Bound persisted counters so a damaged file cannot poison the UI."""
+    source = raw if isinstance(raw, Mapping) else {}
+    stats = {"version": CLICKER_STATS_VERSION}
+    for key in ("total_clicks", "sessions", "last_session_clicks",
+                "last_session_seconds", "best_session_clicks"):
+        stats[key] = int(_number(source.get(key), 0, 0, CLICKER_STATS_MAX,
+                                 integer=True))
+    return stats
+
+
+def load_clicker_stats(path: str | os.PathLike) -> dict:
+    try:
+        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError):
+        raw = {}
+    return normalize_clicker_stats(raw)
+
+
+def save_clicker_stats(stats: Mapping[str, Any], path: str | os.PathLike) -> Path:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_suffix(target.suffix + ".tmp")
+    payload = json.dumps(normalize_clicker_stats(stats),
+                         indent=2, sort_keys=True) + "\n"
+    tmp.write_text(payload, encoding="utf-8")
+    os.chmod(tmp, 0o600)
+    os.replace(tmp, target)
+    os.chmod(target, 0o600)
+    _claim_owner(target)
+    return target
+
+
 class CountingSink(engine.InputSink if engine else object):
     """Input sink that also counts completed clicks for the dashboard."""
 
@@ -1259,7 +1306,10 @@ class StudioService:
                  macro_sink_factory: Callable[[], Any] | None = None,
                  recorder_factory: Callable[[], Any] | None = None) -> None:
         self.path = Path(path) if path else settings_path()
+        self.stats_path = clicker_stats_path(self.path)
         self.settings = load_settings(self.path)
+        self._clicker_stats = load_clicker_stats(self.stats_path)
+        self._privacy_toggle_callback: Callable[[], Any] | None = None
         self._sink_factory = sink_factory
         self._emit_cb = emit
         self._lock = threading.RLock()
@@ -1409,6 +1459,23 @@ class StudioService:
                 traceback.print_exc()
 
     # -- global hotkeys ----------------------------------------------------
+    def set_privacy_toggle(self, callback: Callable[[], Any] | None) -> None:
+        """Let the window receive the Hide UI action from the global listener."""
+        self._privacy_toggle_callback = callback
+
+    def toggle_privacy(self) -> tuple[bool, str]:
+        """Toggle the window's display-only privacy mask from a hotkey."""
+        callback = self._privacy_toggle_callback
+        if callback is None:
+            return False, "Hide UI is only available while the window is open."
+        try:
+            result = callback()
+        except Exception as exc:
+            return False, "%s: %s" % (type(exc).__name__, exc)
+        if isinstance(result, tuple) and len(result) == 2:
+            return bool(result[0]), str(result[1])
+        return True, "Interface values toggled."
+
     def hotkey_mapping(self) -> dict:
         """Return the current action -> canonical key map."""
         raw = _mapping(self.settings.get("hotkeys"))
@@ -2549,6 +2616,13 @@ class StudioService:
         self._emit()
         return ok, message
 
+    def toggle_recording(self) -> tuple[bool, str]:
+        """One global action for both starting and finishing a capture."""
+        snap = self.recorder_snapshot()
+        if snap.get("running") or snap.get("starting"):
+            return self.stop_recording(wait=False)
+        return self.start_recording()
+
     def recorder_active_window(self) -> str:
         if screen_recorder is None:
             return ""
@@ -2756,6 +2830,8 @@ class StudioService:
                         self._ac_last_clicks = self.click_count()
                     except Exception:
                         self._ac_last_clicks = 0
+                    self._record_clicker_session(self._ac_last_clicks,
+                                                 self._ac_last_elapsed)
                     with self._lock:
                         if self._ac_stop is stop:
                             self._ac_thread = None
@@ -2894,6 +2970,36 @@ class StudioService:
             return int(getattr(sink, "clicks", 0) or 0) if sink is not None else 0
         except (TypeError, ValueError):
             return 0
+
+    def clicker_stats_snapshot(self) -> dict:
+        with self._lock:
+            return dict(self._clicker_stats)
+
+    def _record_clicker_session(self, clicks: Any, seconds: Any) -> None:
+        """Persist lifetime totals once per completed clicker run."""
+        try:
+            count = max(0, int(clicks))
+            elapsed = max(0.0, float(seconds))
+        except (TypeError, ValueError):
+            return
+        if count <= 0:
+            return
+        with self._lock:
+            stats = dict(self._clicker_stats)
+            stats["total_clicks"] = min(
+                CLICKER_STATS_MAX, int(stats.get("total_clicks", 0)) + count)
+            stats["sessions"] = min(
+                CLICKER_STATS_MAX, int(stats.get("sessions", 0)) + 1)
+            stats["last_session_clicks"] = count
+            stats["last_session_seconds"] = round(elapsed, 3)
+            stats["best_session_clicks"] = max(
+                int(stats.get("best_session_clicks", 0)), count)
+            self._clicker_stats = stats
+        try:
+            save_clicker_stats(stats, self.stats_path)
+        except OSError as exc:
+            if not self._ac_error:
+                self._ac_error = "Clicker stopped, but stats could not be saved: %s" % exc
 
     def pointer_position(self) -> tuple[int, int] | None:
         """Read-only cursor position for the sidebar; never starts an engine."""
@@ -4697,6 +4803,7 @@ class StudioService:
                 "error": self._ac_error,
                 "paused": bool(self._ac_paused),
                 "blocked": self._ac_blocked,
+                "stats": self.clicker_stats_snapshot(),
             },
             "rotation": {
                 "enabled": self.macro_enabled,
