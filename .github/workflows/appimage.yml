@@ -28,7 +28,7 @@ jobs:
           chmod +x packaging/appimage/build.sh
           ./packaging/appimage/build.sh
           file dist/*.AppImage
-          sha256sum dist/*.AppImage | tee dist/SHA256SUMS
+          (cd dist && sha256sum *.AppImage > SHA256SUMS)
 
       - uses: actions/upload-artifact@v4
         with:

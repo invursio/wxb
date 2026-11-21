@@ -25,6 +25,11 @@
   <project_license>MIT</project_license>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="0.1.1" date="2026-11-21">
+      <description>
+        <p>Write release checksums with portable file names.</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-11-21">
       <description>
         <p>First public AppImage build.</p>
