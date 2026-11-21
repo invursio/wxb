@@ -1,0 +1,46 @@
+#!/bin/sh
+# WXB Studio AppImage entrypoint.
+set -eu
+
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+APP="$HERE/usr/share/wxb"
+export PYTHONPATH="$APP/vendor:$APP${PYTHONPATH:+:$PYTHONPATH}"
+
+PYTHON=${WXB_PYTHON:-python3}
+if ! command -v "$PYTHON" >/dev/null 2>&1; then
+    echo "WXB needs Python 3, but '$PYTHON' was not found." >&2
+    exit 1
+fi
+
+if ! "$PYTHON" - "$@" <<'PY' 2>/dev/null
+import sys
+import gi
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+from gi.repository import Gtk, Adw
+import cairo  # noqa: F401
+if (Gtk.get_major_version(), Gtk.get_minor_version()) < (4, 14):
+    raise SystemExit(1)
+if (Adw.get_major_version(), Adw.get_minor_version()) < (1, 5):
+    raise SystemExit(1)
+PY
+then
+    cat >&2 <<'MSG'
+WXB needs GTK 4.14+, libadwaita 1.5+, PyGObject and pycairo from your distro.
+
+  Ubuntu / Linux Mint:
+    sudo apt install python3-gi python3-cairo gir1.2-gtk-4.0 gir1.2-adw-1
+
+  Fedora:
+    sudo dnf install python3-gobject python3-cairo gtk4 libadwaita
+
+  Arch / Manjaro:
+    sudo pacman -S python-gobject python-cairo gtk4 libadwaita
+
+Optional features: python3-pil (cover art), python3-evdev (controller test),
+ffmpeg (screen recorder), xdotool and wmctrl (window helpers).
+MSG
+    exit 1
+fi
+
+exec "$PYTHON" "$APP/wxb.py" "$@"

@@ -1,0 +1,4 @@
+pynput      # input simulation and the F6/F7/F8/F9 global hotkeys
+keyboard    # global hotkeys for autoswitcher.py (may need extra access)
+evdev       # optional: the SOCD cleaner (apt install python3-evdev also works)
+Pillow      # optional: cover art for Roblox place cards

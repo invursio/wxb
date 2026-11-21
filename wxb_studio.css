@@ -1,0 +1,2560 @@
+/* WXB Studio — a quiet control suite.
+   Deep navy glass, pale cyan signal, generous negative space.
+
+   The Nexus reference is a photographic mock-up; the app does not ship that
+   artwork.  This system recreates its structure and light instead: a floating
+   sidebar, low-contrast glass cards, one cool signal, and a faint orbital
+   drawing supplied by the shell. */
+
+@define-color wxb_bg #070a15;
+@define-color wxb_bg_soft #0b1020;
+@define-color wxb_surface #0f1730;
+@define-color wxb_surface_2 #141f3b;
+@define-color wxb_surface_3 #1c2b4c;
+@define-color wxb_border #263758;
+@define-color wxb_border_lit #3c5582;
+@define-color wxb_text #f3f6ff;
+@define-color wxb_text_soft #dce6fb;
+@define-color wxb_muted #91a0c0;
+@define-color wxb_dim #657393;
+@define-color wxb_good #8fe3c1;
+@define-color wxb_bad #ff9aae;
+@define-color wxb_accent #9fcaff;
+
+window.wxb,
+.wxb-root {
+  background-color: @wxb_bg;
+  background-image: linear-gradient(125deg, #060914 0%, #0a1124 42%, #111833 72%, #17132b 100%);
+  color: @wxb_text;
+}
+
+.wxb-root {
+  border-radius: 18px;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.wxb-header {
+  background-color: alpha(#080d1b, 0.72);
+  border-bottom: 1px solid alpha(#a6c8ff, 0.08);
+  min-height: 58px;
+  box-shadow: inset 0 -1px 0 alpha(#ffffff, 0.025);
+}
+
+.wxb-header button {
+  background-color: alpha(#192746, 0.45);
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#adcaff, 0.12);
+  border-radius: 99px;
+  padding: 5px 12px;
+  min-height: 26px;
+  transition: background-color 160ms ease, color 160ms ease,
+              border-color 160ms ease;
+}
+
+.wxb-header button:hover {
+  background-color: alpha(#294273, 0.72);
+  border-color: alpha(#bad9ff, 0.28);
+  color: @wxb_text;
+}
+
+.wxb-brand {
+  border-spacing: 0;
+}
+
+.wxb-wordmark {
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 750;
+  color: @wxb_text;
+  letter-spacing: 0.4px;
+}
+
+.wxb-slash {
+  color: alpha(@wxb_dim, 0.8);
+  font-size: 10px;
+  margin: 0 5px;
+}
+
+.wxb-header-kicker {
+  color: @wxb_accent;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.1px;
+}
+
+.wxb-header-page {
+  color: @wxb_muted;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.8px;
+  margin-left: 5px;
+}
+
+/* ----------------------------------------------------------------- sidebar */
+
+.wxb-sidebar {
+  background-color: alpha(#0b1224, 0.86);
+  background-image: linear-gradient(165deg, alpha(#162447, 0.52), alpha(#0a1020, 0.72));
+  border: 1px solid alpha(#a6c8ff, 0.13);
+  border-radius: 21px;
+  padding: 15px 13px 12px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 alpha(#ffffff, 0.06);
+}
+
+.wxb-side-head {
+  margin-bottom: 6px;
+}
+
+.wxb-side-title {
+  font-family: "Cormorant Garamond", "Iowan Old Style", "Georgia", serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: #f7f7ff;
+  letter-spacing: 0.2px;
+}
+
+.wxb-side-sub {
+  color: @wxb_accent;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: 1.35px;
+  margin-top: 1px;
+}
+
+.wxb-side-kicker {
+  color: @wxb_dim;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: 1.4px;
+  margin: 10px 10px 3px;
+}
+
+.wxb-nav {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: @wxb_muted;
+  padding: 5px 9px;
+  min-height: 32px;
+  transition: background-color 170ms ease, color 170ms ease,
+              border-color 170ms ease;
+}
+
+.wxb-nav:hover {
+  background-color: alpha(#7aa9e8, 0.09);
+  border-color: alpha(#b8d7ff, 0.08);
+  color: @wxb_text_soft;
+}
+
+.wxb-nav.active {
+  background-color: alpha(#86b7f5, 0.16);
+  background-image: linear-gradient(90deg, alpha(#a9d3ff, 0.20), alpha(#7f9fe0, 0.08));
+  border-color: alpha(#c5e1ff, 0.26);
+  color: @wxb_text;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.08),
+              0 3px 14px alpha(#2b5892, 0.18);
+}
+
+button.wxb-nav:focus {
+  background-color: transparent;
+  background-image: none;
+  border-color: alpha(#c5e1ff, 0.16);
+  color: @wxb_text_soft;
+  box-shadow: inset 0 0 0 1px alpha(@wxb_accent, 0.20);
+}
+
+button.wxb-nav.active:focus {
+  background-color: alpha(#86b7f5, 0.16);
+  background-image: linear-gradient(90deg, alpha(#a9d3ff, 0.20), alpha(#7f9fe0, 0.08));
+  border-color: alpha(#c5e1ff, 0.26);
+  color: @wxb_text;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.08),
+              0 3px 14px alpha(#2b5892, 0.18);
+}
+
+.wxb-nav.active image {
+  color: @wxb_accent;
+}
+
+.wxb-nav label {
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.wxb-nav-shortcut {
+  color: alpha(@wxb_dim, 0.85);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px;
+}
+
+.wxb-side-quick {
+  padding: 6px 1px 7px;
+}
+
+button.wxb-side-action {
+  background-color: alpha(#1b2c50, 0.55);
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b3d1ff, 0.13);
+  border-radius: 9px;
+  padding: 7px 8px;
+  min-height: 28px;
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
+button.wxb-side-action:hover {
+  background-color: alpha(#2a4573, 0.72);
+  border-color: alpha(#c5e1ff, 0.24);
+  color: @wxb_text;
+}
+
+.wxb-side-footer {
+  border-top: 1px solid alpha(#a6c8ff, 0.11);
+  padding-top: 9px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.wxb-version {
+  color: @wxb_dim;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.35px;
+}
+
+/* -------------------------------------------------------------------- page */
+
+.wxb-content {
+  background-color: transparent;
+}
+
+.wxb-page {
+  background-color: transparent;
+}
+
+.wxb-page-inner {
+  padding: 34px 40px 52px;
+}
+
+.wxb-page-inner-compact {
+  padding: 13px 22px 16px;
+}
+
+.wxb-page-head {
+  padding-bottom: 4px;
+}
+
+.wxb-page-icon {
+  min-width: 43px;
+  min-height: 43px;
+  border-radius: 99px;
+  background-color: alpha(#8bb9f4, 0.10);
+  background-image: linear-gradient(145deg, alpha(#b9ddff, 0.18), alpha(#6b82bd, 0.08));
+  border: 1px solid alpha(#bddcff, 0.20);
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.10),
+              0 8px 22px alpha(#152b55, 0.25);
+}
+
+.wxb-page-icon image,
+.wxb-page-icon-glyph {
+  color: @wxb_accent;
+}
+
+.wxb-page-icon-glyph {
+  margin: 11px;
+}
+
+.wxb-page-title-compact {
+  font-size: 24px;
+}
+
+.wxb-page-sub-compact {
+  font-size: 12px;
+}
+
+.wxb-eyebrow {
+  color: @wxb_accent;
+  font-size: 8.5px;
+  font-weight: 750;
+  letter-spacing: 1.7px;
+  text-shadow: 0 0 14px alpha(@wxb_accent, 0.22);
+}
+
+.wxb-display {
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: @wxb_text;
+  line-height: 1.02;
+}
+
+.wxb-page-title {
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: @wxb_text;
+  letter-spacing: -0.45px;
+}
+
+.wxb-page-sub {
+  color: @wxb_muted;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.wxb-page-title.wxb-page-title-compact {
+  font-size: 24px;
+}
+
+.wxb-page-sub.wxb-page-sub-compact {
+  font-size: 11px;
+}
+
+.wxb-hero-sub {
+  color: @wxb_muted;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.wxb-section-title {
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 650;
+  color: @wxb_text;
+  letter-spacing: -0.1px;
+}
+
+.wxb-section-sub {
+  color: @wxb_dim;
+  font-size: 10.5px;
+}
+
+.wxb-label {
+  color: @wxb_muted;
+  font-size: 11px;
+}
+
+.wxb-hint {
+  color: @wxb_dim;
+  font-size: 9.5px;
+}
+
+/* ------------------------------------------------------------------- cards */
+
+.wxb-card {
+  background-color: alpha(#0e1830, 0.74);
+  background-image: linear-gradient(145deg, alpha(#162746, 0.52), alpha(#0b152a, 0.38));
+  border: 1px solid alpha(#a6c8ff, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.055),
+              0 12px 34px alpha(#020611, 0.22);
+  transition: background-color 190ms ease, border-color 190ms ease,
+              box-shadow 190ms ease;
+}
+
+.wxb-card:hover {
+  background-color: alpha(#132241, 0.80);
+  border-color: alpha(#b9d8ff, 0.24);
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.07),
+              0 15px 40px alpha(#020611, 0.28);
+}
+
+.wxb-card-flat {
+  background-color: alpha(#0e1830, 0.68);
+  border: 1px solid alpha(#a6c8ff, 0.13);
+  border-radius: 13px;
+  padding: 14px;
+}
+
+.wxb-card-accent {
+  background-color: alpha(#87b8f5, 0.09);
+  background-image: linear-gradient(145deg, alpha(#a8d2ff, 0.11), alpha(#573d8f, 0.07));
+  border: 1px solid alpha(#b8d9ff, 0.25);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.055);
+}
+
+.wxb-metric-value {
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 27px;
+  font-weight: 700;
+  color: @wxb_text;
+}
+
+.wxb-metric-sub {
+  color: @wxb_dim;
+  font-size: 9.5px;
+}
+
+.wxb-mono {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+
+.wxb-status {
+  border-radius: 99px;
+  padding: 3px 9px;
+  background-color: alpha(#23385e, 0.58);
+  color: @wxb_muted;
+  font-size: 8.5px;
+  font-weight: 750;
+  letter-spacing: 0.35px;
+}
+
+.wxb-status.live {
+  background-color: alpha(@wxb_accent, 0.13);
+  color: @wxb_accent;
+  box-shadow: inset 0 0 0 1px alpha(@wxb_accent, 0.10);
+}
+
+.wxb-status.good {
+  background-color: alpha(@wxb_good, 0.12);
+  color: @wxb_good;
+}
+
+.wxb-status.bad {
+  background-color: alpha(@wxb_bad, 0.12);
+  color: @wxb_bad;
+}
+
+.wxb-pill {
+  border-radius: 99px;
+  padding: 4px 10px;
+  background-color: alpha(#1b2b4b, 0.65);
+  border: 1px solid alpha(#b2d2ff, 0.10);
+  color: @wxb_muted;
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
+.wxb-divider {
+  background-color: alpha(#a6c8ff, 0.10);
+  min-height: 1px;
+}
+
+.wxb-dot {
+  border-radius: 99px;
+  min-width: 7px;
+  min-height: 7px;
+  background-color: @wxb_dim;
+}
+
+.wxb-dot.live {
+  background-color: @wxb_accent;
+}
+
+.wxb-dot.good {
+  background-color: @wxb_good;
+}
+
+.wxb-dot.bad {
+  background-color: @wxb_bad;
+}
+
+/* ----------------------------------------------------------------- buttons */
+
+button.wxb-primary {
+  background-color: #a8d1ff;
+  background-image: linear-gradient(180deg, #c7e6ff 0%, #9bc7ff 100%);
+  color: #071326;
+  border: 1px solid alpha(#e1f2ff, 0.88);
+  border-radius: 11px;
+  padding: 9px 15px;
+  font-size: 11.5px;
+  font-weight: 750;
+  box-shadow: 0 5px 18px alpha(#5b99ea, 0.20),
+              inset 0 1px 0 alpha(#ffffff, 0.72);
+  transition: background-color 160ms ease, border-color 160ms ease,
+              box-shadow 160ms ease;
+}
+
+button.wxb-primary:hover {
+  background-color: #c6e4ff;
+  background-image: linear-gradient(180deg, #e0f2ff 0%, #b6dcff 100%);
+  border-color: #f4fbff;
+  box-shadow: 0 7px 23px alpha(#6ba9f2, 0.30),
+              inset 0 1px 0 #ffffff;
+}
+
+button.wxb-primary:active {
+  background-color: #8ebdf0;
+  background-image: linear-gradient(180deg, #a8d3ff 0%, #7eb5ef 100%);
+  box-shadow: 0 2px 8px alpha(#4e84c7, 0.22),
+              inset 0 1px 0 alpha(#ffffff, 0.42);
+}
+
+button.wxb-primary:disabled,
+button.wxb-primary:disabled:hover,
+button.wxb-primary:disabled:active {
+  background-color: alpha(#182744, 0.34);
+  background-image: none;
+  color: @wxb_dim;
+  border-color: alpha(#b4d3ff, 0.10);
+  box-shadow: none;
+  opacity: 1;
+}
+
+button.wxb-ghost {
+  background-color: alpha(#182744, 0.38);
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b4d3ff, 0.19);
+  border-radius: 11px;
+  padding: 8px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+button.wxb-ghost:hover {
+  background-color: alpha(#294371, 0.60);
+  border-color: alpha(#d1e8ff, 0.34);
+  color: @wxb_text;
+}
+
+button.wxb-quiet {
+  background-color: transparent;
+  color: @wxb_muted;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 7px 10px;
+  font-size: 10.5px;
+}
+
+button.wxb-quiet:hover {
+  background-color: alpha(#294371, 0.46);
+  color: @wxb_text;
+}
+
+button.wxb-danger {
+  background-color: alpha(@wxb_bad, 0.09);
+  color: @wxb_bad;
+  border: 1px solid alpha(@wxb_bad, 0.27);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 10.5px;
+  font-weight: 650;
+}
+
+button.wxb-danger:hover {
+  background-color: alpha(@wxb_bad, 0.16);
+}
+
+button.wxb-privacy-on {
+  color: @wxb_accent;
+  background-color: alpha(@wxb_accent, 0.11);
+  border-color: alpha(@wxb_accent, 0.20);
+}
+
+/* Privacy only hides values: the control itself keeps its place. */
+.wxb-private,
+.wxb-private text,
+spinbutton.wxb-private,
+spinbutton.wxb-private text,
+dropdown.wxb-private,
+dropdown.wxb-private label {
+  color: transparent;
+}
+
+.wxb-private-scale {
+  opacity: 0.18;
+}
+
+.wxb-hotkey-wait {
+  background-color: alpha(#132039, 0.76);
+  border: 1px solid alpha(#b8d8ff, 0.25);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: @wxb_accent;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+button.wxb-swatch {
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 99px;
+  padding: 0;
+  border: 2px solid transparent;
+}
+
+button.wxb-swatch.selected {
+  border-color: @wxb_text;
+  box-shadow: 0 0 0 2px alpha(@wxb_accent, 0.22);
+}
+
+.wxb-swatch.cyan { background-color: #9fcaff; }
+.wxb-swatch.rose { background-color: #e7a6b4; }
+.wxb-swatch.apricot { background-color: #eab48e; }
+.wxb-swatch.sage { background-color: #a8c3a1; }
+.wxb-swatch.lilac { background-color: #b9abd9; }
+.wxb-swatch.ice { background-color: #9dc5d6; }
+
+button.wxb-icon {
+  background-color: transparent;
+  color: @wxb_muted;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 4px;
+}
+
+button.wxb-icon:hover {
+  background-color: alpha(#294371, 0.46);
+  color: @wxb_text;
+}
+
+/* ------------------------------------------------------------------ inputs */
+
+entry.wxb-entry,
+spinbutton.wxb-spin,
+dropdown.wxb-drop {
+  background-color: alpha(#0a1224, 0.78);
+  color: @wxb_text;
+  border: 1px solid alpha(#a6c8ff, 0.16);
+  border-radius: 10px;
+  padding: 6px 10px;
+  min-height: 32px;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+entry.wxb-entry:focus,
+spinbutton.wxb-spin:focus,
+dropdown.wxb-drop:focus {
+  border-color: alpha(@wxb_accent, 0.78);
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.08);
+}
+
+entry.wxb-value-entry {
+  min-width: 58px;
+  padding: 4px 9px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+
+/* Plain GTK entries are used inside settings, hotkey rows, macro names and
+   several secondary tools.  Style the control globally so no panel falls
+   back to the system rounded-grey field. */
+entry {
+  background-color: alpha(#0a1224, 0.82);
+  color: @wxb_text;
+  border: 1px solid alpha(#a6c8ff, 0.15);
+  border-radius: 9px;
+  padding: 5px 9px;
+  min-height: 30px;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.03);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+entry > text {
+  background-color: transparent;
+  color: @wxb_text;
+}
+
+entry image {
+  color: @wxb_muted;
+}
+
+entry:focus,
+entry:focus-within {
+  border-color: alpha(@wxb_accent, 0.78);
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.09);
+  outline: none;
+}
+
+entry:disabled {
+  opacity: 0.45;
+}
+
+spinbutton {
+  background-color: alpha(#0a1224, 0.82);
+  color: @wxb_text;
+  border: 1px solid alpha(#a6c8ff, 0.15);
+  border-radius: 9px;
+  min-height: 30px;
+  padding: 0;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.03);
+}
+
+spinbutton entry,
+spinbutton text {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  padding: 4px 7px;
+}
+
+spinbutton > button {
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: @wxb_muted;
+  min-width: 22px;
+  min-height: 20px;
+  padding: 1px;
+}
+
+spinbutton > button:hover {
+  background-color: alpha(#b8d8ff, 0.12);
+  color: @wxb_text;
+}
+
+spinbutton:focus-within {
+  border-color: alpha(@wxb_accent, 0.78);
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.09);
+}
+
+spinbutton:disabled {
+  opacity: 0.45;
+}
+
+dropdown {
+  background-color: alpha(#0a1224, 0.82);
+  color: @wxb_text;
+  border: 1px solid alpha(#a6c8ff, 0.15);
+  border-radius: 9px;
+  min-height: 30px;
+  padding: 0;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.03);
+}
+
+dropdown > button,
+dropdown button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: @wxb_text;
+  padding: 4px 7px;
+}
+
+dropdown > button:hover,
+dropdown button:hover {
+  color: @wxb_text;
+}
+
+dropdown:focus-within {
+  border-color: alpha(@wxb_accent, 0.78);
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.09);
+}
+
+dropdown:disabled {
+  opacity: 0.45;
+}
+
+scale.wxb-scale trough {
+  background-color: alpha(#233552, 0.85);
+  border-radius: 99px;
+  min-height: 4px;
+}
+
+scale.wxb-scale highlight {
+  background-color: @wxb_accent;
+  background-image: linear-gradient(90deg, #88b8f4, #b9e0ff);
+  border-radius: 99px;
+}
+
+scale.wxb-scale slider {
+  background-color: #f3f9ff;
+  border-radius: 99px;
+  box-shadow: 0 0 0 4px alpha(@wxb_accent, 0.10),
+              0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* GTK switches are shared by every page; keep the signal cool and compact. */
+switch {
+  background-color: alpha(#233552, 0.90);
+  background-image: none;
+  border: 1px solid alpha(#b5d5ff, 0.16);
+  border-radius: 99px;
+  min-width: 40px;
+  min-height: 22px;
+  padding: 2px;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+switch:checked {
+  background-color: alpha(@wxb_accent, 0.75);
+  background-image: none;
+  border-color: alpha(#d4eaff, 0.48);
+}
+
+switch > slider,
+switch slider {
+  background-color: #f5f9ff;
+  border-radius: 99px;
+  min-width: 18px;
+  min-height: 18px;
+  margin: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+switch:hover {
+  background-color: alpha(#2c4268, 0.95);
+}
+
+switch:checked:hover {
+  background-color: alpha(#a9d6ff, 0.88);
+}
+
+switch:focus {
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.12);
+}
+
+switch:disabled {
+  opacity: 0.42;
+}
+
+switch.wxb-switch {
+  background-color: #1b2c4a;
+  background-image: none;
+  border-color: alpha(#b5d5ff, 0.20);
+}
+
+switch.wxb-switch:hover {
+  background-color: #2b4266;
+  background-image: none;
+}
+
+switch.wxb-switch:checked {
+  background-color: #86c4ff;
+  background-image: none;
+  border-color: #d6edff;
+}
+
+switch.wxb-switch:checked:hover {
+  background-color: #a4d6ff;
+  background-image: none;
+}
+
+switch.wxb-switch:focus,
+switch.wxb-switch:focus-within {
+  background-image: none;
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.12);
+}
+
+switch.wxb-switch > slider {
+  background-color: #f5f9ff;
+  border: 1px solid alpha(#0a1324, 0.18);
+}
+
+separator {
+  background-color: alpha(#a6c8ff, 0.12);
+  min-width: 1px;
+  min-height: 1px;
+}
+
+/* ------------------------------------------------------------------- lists */
+
+.wxb-row {
+  padding: 11px 0;
+  border-bottom: 1px solid alpha(#a6c8ff, 0.09);
+}
+
+.wxb-code {
+  background-color: alpha(#0a1224, 0.82);
+  border: 1px solid alpha(#a6c8ff, 0.14);
+  border-radius: 10px;
+  color: @wxb_text_soft;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+
+.wxb-code text {
+  background-color: transparent;
+  color: @wxb_text_soft;
+}
+
+.wxb-expander {
+  border-top: 1px solid alpha(#a6c8ff, 0.10);
+  padding-top: 10px;
+}
+
+.wxb-row:last-child {
+  border-bottom: none;
+}
+
+.wxb-cordial-card {
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.wxb-alt-options {
+  padding: 1px 0 7px;
+  border-bottom: 1px solid alpha(#a6c8ff, 0.10);
+}
+
+.wxb-alt-grid {
+  margin-top: 2px;
+}
+
+.wxb-alt-row {
+  min-height: 21px;
+  padding: 3px 8px;
+  border: 1px solid alpha(#a6c8ff, 0.13);
+  border-radius: 8px;
+  background-color: alpha(#0b1528, 0.68);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.wxb-alt-row:hover {
+  border-color: alpha(#c0dcff, 0.28);
+  background-color: alpha(#172844, 0.82);
+}
+
+.wxb-alt-row .wxb-avatar {
+  min-width: 22px;
+  min-height: 22px;
+  font-size: 10px;
+}
+
+.wxb-alt-row button {
+  min-height: 22px;
+  padding: 2px 7px;
+  font-size: 10px;
+}
+
+.wxb-alt-name {
+  color: @wxb_text;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.wxb-fold {
+  padding: 3px 10px;
+  border: 1px solid alpha(#a6c8ff, 0.12);
+  border-radius: 10px;
+  background-color: alpha(#0d172c, 0.64);
+}
+
+expander-widget.wxb-fold > box > box.title {
+  color: @wxb_text_soft;
+  padding: 6px 2px;
+}
+
+expander-widget.wxb-fold > box > box.title:hover {
+  color: @wxb_text;
+}
+
+expander-widget.wxb-fold > box > box.title > expander {
+  color: @wxb_accent;
+  opacity: 1;
+  min-width: 12px;
+  min-height: 12px;
+  margin-right: 4px;
+}
+
+expander-widget.wxb-fold:hover {
+  border-color: alpha(#c0dcff, 0.20);
+}
+
+.wxb-fold-title {
+  color: @wxb_text_soft;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.wxb-fold-sub {
+  color: @wxb_dim;
+  font-size: 8px;
+}
+
+.wxb-fold-card {
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: alpha(#081120, 0.70);
+}
+
+/* --------------------------------------------------------------- command K */
+
+.wxb-cmd-scrim {
+  background-color: alpha(#03060e, 0.66);
+}
+
+.wxb-command {
+  background-color: alpha(#0d172c, 0.96);
+  background-image: linear-gradient(145deg, alpha(#14233f, 0.94), alpha(#0b1326, 0.96));
+  border: 1px solid alpha(#b8d8ff, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.62),
+              inset 0 1px 0 alpha(#ffffff, 0.08);
+}
+
+.wxb-command entry {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid alpha(#a6c8ff, 0.11);
+  border-radius: 0;
+  color: @wxb_text;
+  font-size: 16px;
+  padding: 15px 18px;
+}
+
+.wxb-command entry:focus {
+  border-bottom-color: alpha(@wxb_accent, 0.82);
+  outline: none;
+  box-shadow: none;
+}
+
+entry.wxb-cmd-entry,
+entry.wxb-cmd-entry:focus,
+entry.wxb-cmd-entry:focus-within,
+entry.wxb-cmd-entry:focus > text,
+entry.wxb-cmd-entry:focus-within > text {
+  outline: none;
+  box-shadow: none;
+  border-color: transparent;
+  border-bottom-color: alpha(@wxb_accent, 0.82);
+}
+
+.wxb-command list {
+  background: transparent;
+}
+
+.wxb-command row {
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin: 2px 6px;
+}
+
+.wxb-command row:hover,
+.wxb-command row:selected {
+  background-color: alpha(#294675, 0.56);
+}
+
+.wxb-command-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: @wxb_text;
+}
+
+.wxb-command-sub {
+  font-size: 10px;
+  color: @wxb_dim;
+}
+
+.wxb-command-key {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: @wxb_dim;
+  border: 1px solid alpha(#b4d3ff, 0.18);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.wxb-command-footer {
+  border-top: 1px solid alpha(#a6c8ff, 0.10);
+  color: @wxb_dim;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  padding: 10px 16px 11px;
+}
+
+.wxb-empty {
+  border: 1px dashed alpha(#a6c8ff, 0.20);
+  border-radius: 16px;
+  padding: 26px;
+}
+
+.wxb-empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: @wxb_text_soft;
+}
+
+.wxb-empty-sub {
+  font-size: 11px;
+  color: @wxb_dim;
+}
+
+.wxb-avatar {
+  background-color: alpha(#243a5f, 0.86);
+  color: @wxb_text;
+  border-radius: 99px;
+  min-width: 30px;
+  min-height: 30px;
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- onboarding */
+
+.wxb-onboard-art {
+  background-color: #0b1221;
+  background-image: linear-gradient(160deg, #101b35 0%, #0a1020 52%, #171329 100%);
+  border-right: 1px solid alpha(#a6c8ff, 0.13);
+}
+
+.wxb-onboard-title {
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: @wxb_text;
+}
+
+.wxb-onboard-body {
+  color: @wxb_muted;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.wxb-onboard-step {
+  color: @wxb_dim;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+
+.wxb-onboard-dot {
+  background-color: alpha(#263a5c, 0.85);
+  border-radius: 99px;
+  min-width: 6px;
+  min-height: 6px;
+}
+
+.wxb-onboard-dot.active {
+  background-color: @wxb_accent;
+  min-width: 18px;
+  min-height: 6px;
+}
+
+/* ------------------------------------------------------------------ chrome */
+
+.wxb-toast {
+  background-color: alpha(#172641, 0.96);
+  color: @wxb_text;
+  border: 1px solid alpha(#b8d8ff, 0.22);
+}
+
+.windowcontrols button,
+windowcontrols button,
+windowcontrols.end > button,
+windowcontrols.start > button,
+headerbar windowcontrols.end > button {
+  background-color: alpha(#172641, 0.72);
+  background-image: none;
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b8d8ff, 0.14);
+  border-radius: 99px;
+  min-width: 22px;
+  min-height: 22px;
+  box-shadow: none;
+}
+
+.windowcontrols button:hover,
+windowcontrols button:hover,
+windowcontrols.end > button:hover,
+windowcontrols.start > button:hover {
+  background-color: alpha(#294371, 0.86);
+  color: @wxb_text;
+}
+
+.windowcontrols button.close,
+windowcontrols button.close,
+windowcontrols.end > button.close,
+windowcontrols.start > button.close,
+headerbar windowcontrols.end > button.close {
+  background-color: alpha(#172641, 0.72);
+  background-image: linear-gradient(transparent, transparent);
+  background-size: auto;
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b8d8ff, 0.14);
+  box-shadow: none;
+}
+
+.windowcontrols button.close:hover,
+windowcontrols button.close:hover,
+windowcontrols.end > button.close:hover,
+windowcontrols.start > button.close:hover {
+  background-color: alpha(@wxb_bad, 0.88);
+  background-image: linear-gradient(transparent, transparent);
+  border-color: alpha(#ffdbe5, 0.26);
+  color: #fff7fa;
+}
+
+windowcontrols > button.close > image,
+windowcontrols.end > button.close > image,
+windowcontrols.start > button.close > image {
+  background-color: transparent;
+  background-image: none;
+  border-radius: 0;
+  padding: 0;
+  color: @wxb_text_soft;
+  filter: none;
+}
+
+windowcontrols > button.close:hover > image,
+windowcontrols.end > button.close:hover > image,
+windowcontrols.start > button.close:hover > image {
+  background-color: transparent;
+  background-image: none;
+  color: #fff7fa;
+  filter: none;
+}
+
+scrollbar {
+  background-color: transparent;
+}
+
+scrollbar slider {
+  background-color: alpha(#a6c8ff, 0.16);
+  border-radius: 99px;
+  min-width: 6px;
+  min-height: 28px;
+}
+
+scrollbar slider:hover {
+  background-color: alpha(#b8d8ff, 0.28);
+}
+
+/* ------------------------------------------------- dialogs / secondary windows */
+
+window.wxb-secondary {
+  background-color: #0b1222;
+  background-image: linear-gradient(145deg, #101b34 0%, #0a1020 58%, #17142d 100%);
+  border: 1px solid alpha(#b8d8ff, 0.20);
+  border-radius: 18px;
+}
+
+window.wxb-hotkey-window {
+  border-radius: 16px;
+}
+
+.wxb-hotkey-body {
+  background-color: transparent;
+  background-image: none;
+  border-radius: 16px;
+}
+
+window.wxb-onboard-window {
+  border-radius: 18px;
+}
+
+.wxb-onboard-pane {
+  background-color: #0c1425;
+  background-image: linear-gradient(160deg, alpha(#121f3c, 0.98), alpha(#0b1222, 0.98));
+  border-radius: 0 18px 18px 0;
+}
+
+window.wxb-dialog {
+  background-color: #0b1222;
+  background-image: linear-gradient(145deg, #111d38 0%, #0a1020 62%, #17142d 100%);
+  border: 1px solid alpha(#b8d8ff, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.58),
+              inset 0 1px 0 alpha(#ffffff, 0.07);
+}
+
+window.wxb-dialog .message-area {
+  background-color: transparent;
+  background-image: none;
+  padding: 24px 24px 4px;
+}
+
+window.wxb-dialog .message-area .title-2 {
+  color: @wxb_text;
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+window.wxb-dialog .message-area label {
+  color: @wxb_muted;
+  font-size: 12px;
+}
+
+window.wxb-dialog .heading,
+window.wxb-dialog .title {
+  color: @wxb_text;
+  font-family: "Inter Display", "Inter", sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+window.wxb-dialog .body,
+window.wxb-dialog .description,
+window.wxb-dialog label {
+  color: @wxb_muted;
+}
+
+window.wxb-dialog button {
+  background-color: alpha(#182744, 0.44);
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b4d3ff, 0.18);
+  border-radius: 9px;
+  padding: 7px 13px;
+}
+
+window.wxb-dialog button:hover {
+  background-color: alpha(#294371, 0.64);
+  color: @wxb_text;
+}
+
+window.wxb-dialog button.destructive-action {
+  background-color: alpha(@wxb_bad, 0.12);
+  border-color: alpha(@wxb_bad, 0.28);
+  color: @wxb_bad;
+}
+
+window.wxb-dialog button.suggested-action {
+  background-color: #a8d1ff;
+  border-color: alpha(#e1f2ff, 0.88);
+  color: #071326;
+}
+
+window.wxb-dialog .response-area,
+window.wxb-dialog actionbar {
+  background-color: alpha(#081120, 0.52);
+  border-top: 1px solid alpha(#a6c8ff, 0.12);
+}
+
+window.wxb-dialog .response-area {
+  padding: 8px;
+}
+
+window.wxb-dialog .response-area button,
+window.wxb-dialog .response-area button.flat,
+window.wxb-dialog .response-area button.text-button {
+  background-color: alpha(#182744, 0.62);
+  background-image: none;
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b4d3ff, 0.18);
+  border-radius: 9px;
+  padding: 8px 14px;
+  box-shadow: none;
+}
+
+window.wxb-dialog .response-area button:hover,
+window.wxb-dialog .response-area button.flat:hover,
+window.wxb-dialog .response-area button.text-button:hover {
+  background-color: alpha(#294371, 0.72);
+  color: @wxb_text;
+}
+
+window.wxb-dialog .response-area button.destructive,
+window.wxb-dialog .response-area button.destructive-action {
+  background-color: alpha(@wxb_bad, 0.12);
+  border-color: alpha(@wxb_bad, 0.30);
+  color: @wxb_bad;
+}
+
+window.wxb-dialog .response-area button.default {
+  border-color: alpha(#b8d8ff, 0.25);
+}
+
+window.wxb-dialog .response-area separator {
+  background-color: alpha(#a6c8ff, 0.10);
+  min-width: 1px;
+}
+
+dialog.wxb-about-dialog,
+dialog.wxb-about-dialog sheet.background,
+dialog.wxb-about-dialog sheet,
+window.wxb-about-dialog sheet {
+  background-color: #0b1222;
+  background-image: linear-gradient(145deg, #111d38 0%, #0a1020 62%, #17142d 100%);
+  border: 1px solid alpha(#b8d8ff, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.58);
+}
+
+dialog.wxb-about-dialog .main-page,
+dialog.wxb-about-dialog .page,
+window.wxb-about-dialog .main-page,
+window.wxb-about-dialog .page {
+  background-color: transparent;
+}
+
+dialog.wxb-about-dialog .title-1,
+dialog.wxb-about-dialog .title,
+dialog.wxb-about-dialog .name,
+window.wxb-about-dialog .title,
+window.wxb-about-dialog .name {
+  color: @wxb_text;
+  font-family: "Inter Display", "Inter", sans-serif;
+}
+
+dialog.wxb-about-dialog headerbar,
+window.wxb-about-dialog headerbar {
+  background-color: transparent;
+  border-bottom: 1px solid alpha(#a6c8ff, 0.10);
+}
+
+dialog.wxb-about-dialog label,
+dialog.wxb-about-dialog .body,
+window.wxb-about-dialog label,
+window.wxb-about-dialog .description {
+  color: @wxb_muted;
+}
+
+dialog.wxb-about-dialog button,
+window.wxb-about-dialog button {
+  background-color: alpha(#182744, 0.42);
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b4d3ff, 0.15);
+  border-radius: 9px;
+}
+
+dialog.wxb-about-dialog button:hover,
+window.wxb-about-dialog button:hover {
+  background-color: alpha(#294371, 0.64);
+  color: @wxb_text;
+}
+
+dialog.wxb-about-dialog .app-version,
+window.wxb-about-dialog .app-version {
+  background-color: alpha(#182744, 0.72);
+  color: @wxb_text_soft;
+  border: 1px solid alpha(#b4d3ff, 0.20);
+  border-radius: 99px;
+  padding: 3px 10px;
+}
+
+dialog.wxb-about-dialog .app-version:hover,
+window.wxb-about-dialog .app-version:hover {
+  background-color: alpha(#294371, 0.82);
+  color: @wxb_text;
+}
+
+dialog.wxb-about-dialog textview,
+window.wxb-about-dialog textview {
+  background-color: transparent;
+  color: @wxb_muted;
+}
+
+/* ---------------------------------------------------------- tooltip / menus */
+
+tooltip {
+  background-color: alpha(#0d172c, 0.98);
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+tooltip.background {
+  background-color: alpha(#0d172c, 0.98);
+  border: 1px solid alpha(#b8d8ff, 0.22);
+  border-radius: 9px;
+  padding: 5px 8px;
+}
+
+tooltip label {
+  color: @wxb_text_soft;
+  font-size: 10px;
+}
+
+popover {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+popover.background {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+popover > contents {
+  background-color: alpha(#0d172c, 0.98);
+  background-image: linear-gradient(145deg, alpha(#14233f, 0.96), alpha(#0b1326, 0.98));
+  border: 1px solid alpha(#b8d8ff, 0.22);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 alpha(#ffffff, 0.07);
+  padding: 5px;
+}
+
+popover.menu modelbutton {
+  background-color: transparent;
+  border-radius: 7px;
+  color: @wxb_text_soft;
+  padding: 6px 9px;
+  min-height: 24px;
+}
+
+popover.menu modelbutton:hover,
+popover.menu modelbutton:focus {
+  background-color: alpha(#294675, 0.62);
+  color: @wxb_text;
+}
+
+popover.menu label {
+  color: inherit;
+  font-size: 11px;
+}
+
+popover.menu separator {
+  background-color: alpha(#a6c8ff, 0.12);
+  margin: 4px 7px;
+}
+
+popover listview {
+  background-color: transparent;
+}
+
+popover listview > row {
+  background-color: transparent;
+  border-radius: 7px;
+  color: @wxb_text_soft;
+  padding: 5px 8px;
+}
+
+popover listview > row:hover,
+popover listview > row:selected {
+  background-color: alpha(#294675, 0.62);
+  color: @wxb_text;
+}
+
+/* ------------------------------------------------------------------- toast */
+
+toast,
+toast.background,
+.wxb-toast {
+  background-color: alpha(#101d36, 0.98);
+  color: @wxb_text;
+  border: 1px solid alpha(#b8d8ff, 0.24);
+  border-radius: 99px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.46);
+}
+
+toast label,
+.wxb-toast label {
+  color: @wxb_text;
+  font-size: 11px;
+}
+
+toast button,
+.wxb-toast button {
+  background-color: transparent;
+  color: @wxb_muted;
+  border: none;
+  border-radius: 99px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 1px;
+}
+
+toast button:hover,
+.wxb-toast button:hover {
+  background-color: alpha(#b8d8ff, 0.14);
+  color: @wxb_text;
+}
+
+/* -------------------------------------------------------------- macro / fold */
+
+listbox.wxb-macro-steps {
+  background-color: alpha(#081120, 0.72);
+  border: 1px solid alpha(#a6c8ff, 0.13);
+  border-radius: 10px;
+  color: @wxb_text_soft;
+}
+
+.wxb-step-scroll {
+  background-color: alpha(#081120, 0.72);
+  border: 1px solid alpha(#a6c8ff, 0.13);
+  border-radius: 10px;
+}
+
+.wxb-step-scroll listbox.wxb-macro-steps {
+  background-color: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+listbox.wxb-macro-steps > row {
+  background-color: transparent;
+  border-bottom: 1px solid alpha(#a6c8ff, 0.08);
+  color: @wxb_text_soft;
+  padding: 6px 10px;
+}
+
+listbox.wxb-macro-steps > row:hover {
+  background-color: alpha(#294675, 0.42);
+  color: @wxb_text;
+}
+
+listbox.wxb-macro-steps > row:selected {
+  background-color: alpha(#7faeff, 0.16);
+  color: @wxb_text;
+}
+
+listbox.wxb-macro-steps label {
+  color: inherit;
+}
+
+scrolledwindow,
+viewport,
+list {
+  background-color: transparent;
+}
+
+expander-widget.wxb-expander {
+  background-color: alpha(#0b1528, 0.88);
+  background-image: linear-gradient(145deg, alpha(#142440, 0.52), alpha(#0b1528, 0.72));
+  border: 1px solid alpha(#a6c8ff, 0.13);
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+
+.wxb-advanced {
+  background-color: alpha(#081120, 0.42);
+  border: 1px solid alpha(#a6c8ff, 0.12);
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+.wxb-advanced expander-widget.wxb-expander {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  padding: 0;
+}
+
+expander-widget.wxb-expander > box > box.title,
+expander-widget.wxb-expander box.title {
+  color: @wxb_text_soft;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+expander-widget.wxb-expander > box > box.title:hover,
+expander-widget.wxb-expander box.title:hover {
+  color: @wxb_text;
+}
+
+expander-widget.wxb-expander expander,
+expander-widget.wxb-expander > box > box.title > expander {
+  color: @wxb_accent;
+  opacity: 1;
+  min-width: 11px;
+  min-height: 11px;
+}
+
+/* ------------------------------------------------------------- focus states */
+
+button:focus,
+entry:focus,
+spinbutton:focus-within,
+dropdown:focus-within,
+switch:focus,
+row:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px alpha(@wxb_accent, 0.10);
+}
+
+.wxb-muted {
+  color: @wxb_muted;
+}
+
+.wxb-dim {
+  color: @wxb_dim;
+}
+
+.wxb-good {
+  color: @wxb_good;
+}
+
+.wxb-bad {
+  color: @wxb_bad;
+}
+
+.wxb-accent {
+  color: @wxb_accent;
+}
+
+/* ==========================================================================
+   Nexus layout layer
+   Two floating panes of smoked indigo glass over a soft violet aurora.  The
+   reference is a photograph of a monitor, so its wallpaper is not app content;
+   the light and structure below are what travel with WXB.
+   ========================================================================== */
+
+window.wxb,
+.wxb-root {
+  background-color: #05060f;
+  background-image:
+    radial-gradient(circle at 84% 13%, rgba(133, 91, 255, 0.34) 0%, rgba(99, 48, 190, 0.18) 23%, rgba(7, 7, 18, 0) 52%),
+    radial-gradient(circle at 71% 48%, rgba(57, 98, 186, 0.16) 0%, rgba(10, 12, 26, 0) 43%),
+    radial-gradient(circle at 8% 91%, rgba(102, 57, 196, 0.20) 0%, rgba(7, 7, 17, 0) 46%),
+    linear-gradient(145deg, #05060f 0%, #090a1a 48%, #100a22 80%, #0d081a 100%);
+}
+
+.wxb-root {
+  border-radius: 18px;
+}
+
+.wxb-main-panel {
+  background-color: rgba(8, 10, 23, 0.60);
+  background-image:
+    radial-gradient(circle at 82% 3%, rgba(133, 91, 255, 0.17) 0%, rgba(8, 10, 23, 0) 42%),
+    linear-gradient(158deg, rgba(23, 26, 48, 0.62), rgba(7, 9, 20, 0.76) 72%);
+  border: 1px solid rgba(202, 214, 255, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.38),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.wxb-main-panel .wxb-header {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 17px 17px 0 0;
+  min-height: 52px;
+  padding: 2px 9px;
+  box-shadow: none;
+}
+
+.wxb-main-panel toolbarview,
+.wxb-main-panel scrolledwindow,
+.wxb-main-panel viewport,
+.wxb-main-panel stack {
+  background-color: transparent;
+}
+
+.wxb-brand {
+  border-spacing: 0;
+}
+
+.wxb-header-kicker {
+  color: #b9c8f4;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.wxb-slash {
+  color: rgba(188, 200, 231, 0.62);
+  font-size: 10px;
+  margin: 0 2px;
+}
+
+.wxb-header-page {
+  color: #929db9;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  margin-left: 1px;
+}
+
+.wxb-header-pill {
+  background-color: rgba(29, 35, 58, 0.44);
+  color: #c9d2e7;
+  border: 1px solid rgba(214, 226, 255, 0.21);
+  border-radius: 999px;
+  padding: 4px 13px;
+  min-height: 28px;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.wxb-header-pill:hover {
+  background-color: rgba(53, 64, 102, 0.68);
+  border-color: rgba(222, 234, 255, 0.32);
+  color: #f0f4ff;
+}
+
+.wxb-main-panel .wxb-icon {
+  background-color: transparent;
+  border: none;
+  min-width: 27px;
+  min-height: 27px;
+  padding: 3px;
+  color: #8c97b1;
+  box-shadow: none;
+}
+
+.wxb-main-panel .wxb-icon:hover {
+  background-color: rgba(177, 196, 240, 0.12);
+  color: #eef3ff;
+}
+
+.wxb-main-panel windowcontrols button {
+  background-color: transparent;
+  border: none;
+  border-radius: 7px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 2px;
+  color: #9aa5bf;
+  box-shadow: none;
+}
+
+.wxb-main-panel windowcontrols button:hover {
+  background-color: rgba(181, 200, 242, 0.14);
+  color: #f4f7ff;
+}
+
+.wxb-main-panel windowcontrols button.close,
+.wxb-main-panel headerbar windowcontrols button.close {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  color: #aab4ca;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 2px;
+}
+
+.wxb-main-panel windowcontrols button.close:hover,
+.wxb-main-panel headerbar windowcontrols button.close:hover {
+  background-color: rgba(222, 103, 132, 0.18);
+  border-radius: 7px;
+  color: #ffd7e0;
+}
+
+/* ------------------------------------------------------------------ sidebar */
+
+.wxb-sidebar {
+  background-color: rgba(8, 10, 22, 0.64);
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(123, 104, 205, 0.20) 0%, rgba(8, 10, 22, 0) 47%),
+    linear-gradient(160deg, rgba(27, 28, 55, 0.62), rgba(7, 9, 19, 0.74) 68%);
+  border: 1px solid rgba(201, 211, 250, 0.18);
+  border-radius: 20px;
+  padding: 12px 11px 11px;
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.34),
+              inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.wxb-side-head {
+  margin-bottom: 0;
+}
+
+.wxb-side-title {
+  font-family: "Noto Serif Display", "Noto Serif", serif;
+  font-size: 29px;
+  font-weight: 600;
+  color: #f8f7ff;
+  letter-spacing: -0.2px;
+}
+
+.wxb-side-sub {
+  color: #b9bfd7;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 1.25px;
+  margin-top: 0;
+}
+
+button.wxb-side-collapse {
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #a7b1c9;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 2px;
+  box-shadow: none;
+}
+
+button.wxb-side-collapse:hover {
+  background-color: rgba(184, 200, 240, 0.14);
+  color: #f0f4ff;
+}
+
+.wxb-nav {
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: #aab3c9;
+  padding: 2px 9px;
+  /* Nine rows now share the sidebar with the launch controls.  Keep the
+     same hit target feel without letting the bottom footer clip at 780px. */
+  min-height: 29px;
+  margin: 1px 0;
+  transition: background-color 150ms ease, color 150ms ease,
+              border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.wxb-nav:hover {
+  background-color: rgba(164, 181, 224, 0.08);
+  border-color: rgba(191, 206, 245, 0.10);
+  color: #edf2ff;
+}
+
+.wxb-nav.active {
+  background-color: rgba(145, 183, 244, 0.25);
+  background-image: linear-gradient(100deg, rgba(190, 217, 255, 0.26), rgba(105, 135, 198, 0.16));
+  border-color: rgba(216, 233, 255, 0.35);
+  color: #f7faff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13),
+              0 4px 15px rgba(0, 0, 0, 0.14);
+}
+
+button.wxb-nav:focus {
+  background-color: transparent;
+  background-image: none;
+  border-color: rgba(199, 221, 255, 0.20);
+  color: #eaf1ff;
+  box-shadow: none;
+}
+
+button.wxb-nav.active:focus {
+  background-color: rgba(145, 183, 244, 0.25);
+  background-image: linear-gradient(100deg, rgba(190, 217, 255, 0.26), rgba(105, 135, 198, 0.16));
+  border-color: rgba(216, 233, 255, 0.35);
+  color: #f7faff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13);
+}
+
+.wxb-nav image {
+  color: #b9c4de;
+}
+
+.wxb-nav.active image {
+  color: #dcecff;
+}
+
+.wxb-nav label,
+.wxb-nav .wxb-nav-title {
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.wxb-nav.active .wxb-nav-title {
+  font-weight: 600;
+}
+
+.wxb-nav-secondary {
+  min-height: 29px;
+  margin-top: 0;
+}
+
+.wxb-nav-secondary .wxb-nav-title {
+  color: #aeb7cc;
+  font-size: 11.5px;
+}
+
+button.wxb-starter {
+  background-color: rgba(15, 19, 34, 0.42);
+  background-image: none;
+  border: 1px solid rgba(210, 222, 255, 0.28);
+  border-radius: 9px;
+  color: #f1f4ff;
+  padding: 6px 10px;
+  min-height: 33px;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+button.wxb-starter:hover {
+  background-color: rgba(151, 174, 232, 0.16);
+  border-color: rgba(227, 237, 255, 0.44);
+  color: #ffffff;
+}
+
+.wxb-mouse-panel {
+  background-color: rgba(5, 7, 15, 0.50);
+  border: 1px solid rgba(200, 213, 250, 0.15);
+  border-radius: 10px;
+  padding: 8px 9px 9px;
+}
+
+.wxb-mouse-title {
+  color: #aeb7cf;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 7.5px;
+  font-weight: 650;
+  letter-spacing: 1.15px;
+}
+
+.wxb-mouse-field {
+  background-color: rgba(162, 188, 246, 0.16);
+  border: 1px solid rgba(201, 218, 255, 0.17);
+  border-radius: 5px;
+  padding: 3px 7px;
+  min-height: 22px;
+}
+
+.wxb-mouse-axis {
+  color: #aab5cd;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.wxb-mouse-value {
+  color: #f2f5ff;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.wxb-side-rule {
+  background-color: rgba(197, 210, 247, 0.13);
+  min-height: 1px;
+}
+
+.wxb-side-footer {
+  border-top: 1px solid rgba(197, 210, 247, 0.13);
+  padding-top: 8px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.wxb-side-footer .wxb-hint {
+  color: #7f8aa4;
+  font-size: 8.5px;
+}
+
+.wxb-side-version {
+  color: #a6afc6;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 7.5px;
+  font-weight: 550;
+  letter-spacing: 1.15px;
+  margin-top: 2px;
+}
+
+/* ---------------------------------------------------------------- page type */
+
+.wxb-page-inner {
+  padding: 27px 32px 54px;
+}
+
+.wxb-page-inner-compact {
+  padding: 18px 24px 24px;
+}
+
+.wxb-page-head {
+  padding-bottom: 1px;
+}
+
+.wxb-page-icon {
+  min-width: 41px;
+  min-height: 41px;
+  border-radius: 999px;
+  background-color: rgba(156, 188, 247, 0.16);
+  background-image: linear-gradient(145deg, rgba(201, 226, 255, 0.24), rgba(96, 112, 168, 0.12));
+  border: 1px solid rgba(208, 228, 255, 0.27);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+              0 6px 20px rgba(3, 6, 18, 0.24);
+}
+
+.wxb-page-icon-glyph {
+  color: #d7e9ff;
+  margin: 10px;
+}
+
+.wxb-page-title,
+.wxb-page-title.wxb-page-title-compact {
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 24px;
+  font-weight: 650;
+  color: #f4f6ff;
+  letter-spacing: -0.35px;
+}
+
+.wxb-page-sub,
+.wxb-page-sub.wxb-page-sub-compact {
+  color: #9ba5bd;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.wxb-section-title {
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #eef2fb;
+  letter-spacing: -0.1px;
+}
+
+.wxb-section-sub {
+  color: #858fa8;
+  font-size: 10px;
+}
+
+.wxb-label {
+  color: #b4bdd0;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 10.5px;
+}
+
+.wxb-hint {
+  color: #939eb8;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.wxb-eyebrow {
+  color: #c3d8f8;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.35px;
+  text-shadow: none;
+}
+
+/* ------------------------------------------------------------------- cards */
+
+.wxb-card {
+  background-color: rgba(11, 14, 28, 0.55);
+  background-image: linear-gradient(152deg, rgba(35, 40, 68, 0.50), rgba(8, 11, 23, 0.46));
+  border: 1px solid rgba(202, 216, 252, 0.18);
+  border-radius: 12px;
+  padding: 16px 17px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.065),
+              0 10px 28px rgba(0, 0, 0, 0.15);
+  transition: background-color 160ms ease, border-color 160ms ease,
+              box-shadow 160ms ease;
+}
+
+.wxb-card:hover {
+  background-color: rgba(17, 22, 41, 0.72);
+  border-color: rgba(217, 231, 255, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.085),
+              0 13px 31px rgba(0, 0, 0, 0.19);
+}
+
+.wxb-card .wxb-card {
+  background-color: rgba(6, 9, 20, 0.40);
+  background-image: none;
+  border-color: rgba(199, 214, 250, 0.11);
+  border-radius: 9px;
+  padding: 11px 13px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.wxb-card .wxb-card:hover {
+  background-color: rgba(17, 22, 41, 0.50);
+  border-color: rgba(208, 225, 255, 0.18);
+}
+
+.wxb-card-flat {
+  background-color: rgba(8, 11, 23, 0.48);
+  border-color: rgba(199, 214, 250, 0.13);
+  border-radius: 10px;
+  padding: 12px 13px;
+}
+
+.wxb-card-accent {
+  background-color: rgba(142, 180, 247, 0.10);
+  background-image: linear-gradient(145deg, rgba(177, 211, 255, 0.14), rgba(92, 75, 155, 0.09));
+  border: 1px solid rgba(203, 225, 255, 0.27);
+  border-radius: 12px;
+  padding: 16px 17px;
+}
+
+.wxb-status-bar {
+  min-height: 46px;
+  padding: 10px 15px;
+  border-radius: 11px;
+  background-color: rgba(11, 14, 28, 0.58);
+  background-image: linear-gradient(100deg, rgba(28, 33, 58, 0.52), rgba(8, 11, 23, 0.48));
+}
+
+.wxb-metric-value {
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 23px;
+  font-weight: 600;
+  color: #f3f6ff;
+  letter-spacing: -0.5px;
+}
+
+.wxb-metric-sub {
+  color: #858fa8;
+  font-size: 9.5px;
+}
+
+.wxb-status {
+  border-radius: 999px;
+  padding: 2px 8px;
+  background-color: rgba(159, 177, 215, 0.12);
+  color: #b4bed3;
+  font-size: 8px;
+  font-weight: 650;
+  letter-spacing: 0.35px;
+}
+
+.wxb-status.live {
+  background-color: rgba(165, 206, 255, 0.16);
+  color: #d4eaff;
+  box-shadow: inset 0 0 0 1px rgba(168, 211, 255, 0.15);
+}
+
+.wxb-pill {
+  background-color: rgba(21, 27, 46, 0.70);
+  border: 1px solid rgba(198, 216, 255, 0.12);
+  color: #acb7cd;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 9px;
+}
+
+/* ----------------------------------------------------------------- buttons */
+
+button.wxb-primary {
+  background-color: #a9ccf4;
+  background-image: linear-gradient(180deg, #c5e2ff 0%, #91bff0 100%);
+  color: #07101f;
+  border: 1px solid rgba(234, 246, 255, 0.78);
+  border-radius: 8px;
+  padding: 6px 14px;
+  min-height: 30px;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 10.5px;
+  font-weight: 650;
+  box-shadow: 0 4px 16px rgba(75, 132, 204, 0.22),
+              inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transition: background-color 150ms ease, box-shadow 150ms ease,
+              border-color 150ms ease;
+}
+
+button.wxb-primary:hover {
+  background-color: #c8e4ff;
+  background-image: linear-gradient(180deg, #e3f4ff 0%, #afd7ff 100%);
+  border-color: #ffffff;
+  box-shadow: 0 6px 21px rgba(92, 153, 230, 0.34),
+              inset 0 1px 0 #ffffff;
+}
+
+button.wxb-primary:active {
+  background-color: #8fbce9;
+  background-image: linear-gradient(180deg, #a8d3fb 0%, #7fb5e9 100%);
+  box-shadow: 0 2px 7px rgba(42, 87, 145, 0.24);
+}
+
+button.wxb-ghost {
+  background-color: rgba(21, 27, 47, 0.56);
+  color: #dfe8fb;
+  border: 1px solid rgba(203, 219, 252, 0.22);
+  border-radius: 8px;
+  padding: 6px 13px;
+  min-height: 30px;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 10.5px;
+  font-weight: 550;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+button.wxb-ghost:hover {
+  background-color: rgba(69, 82, 124, 0.50);
+  border-color: rgba(222, 235, 255, 0.36);
+  color: #ffffff;
+}
+
+button.wxb-quiet {
+  background-color: transparent;
+  color: #aeb9cf;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 5px 8px;
+  min-height: 27px;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+button.wxb-quiet:hover {
+  background-color: rgba(156, 177, 227, 0.14);
+  border-color: rgba(199, 216, 252, 0.13);
+  color: #f0f5ff;
+}
+
+button.wxb-danger {
+  background-color: rgba(230, 127, 151, 0.08);
+  color: #eaa2b3;
+  border: 1px solid rgba(234, 150, 170, 0.24);
+  border-radius: 8px;
+  padding: 5px 11px;
+  min-height: 28px;
+  font-size: 10px;
+  font-weight: 550;
+}
+
+/* ------------------------------------------------------------------ inputs */
+
+entry,
+entry.wxb-entry,
+spinbutton,
+spinbutton.wxb-spin,
+dropdown,
+dropdown.wxb-drop {
+  background-color: rgba(5, 8, 18, 0.62);
+  color: #edf3ff;
+  border: 1px solid rgba(197, 214, 249, 0.17);
+  border-radius: 7px;
+  min-height: 30px;
+  padding: 4px 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+entry:focus,
+entry:focus-within,
+spinbutton:focus-within,
+dropdown:focus-within {
+  border-color: rgba(190, 219, 255, 0.66);
+  box-shadow: 0 0 0 2px rgba(161, 199, 255, 0.10);
+  outline: none;
+}
+
+entry > text,
+spinbutton entry,
+spinbutton text {
+  background-color: transparent;
+  color: #edf3ff;
+}
+
+dropdown > button,
+dropdown button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: #e7edfa;
+  padding: 2px 6px;
+}
+
+spinbutton > button {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  color: #9eaac1;
+  min-width: 22px;
+  min-height: 20px;
+}
+
+spinbutton > button:hover {
+  background-color: rgba(180, 202, 246, 0.12);
+  color: #f2f6ff;
+}
+
+/* Nexus spends its one bright colour on the primary action and sliders. */
+scale.wxb-scale trough {
+  background-color: rgba(24, 31, 51, 0.92);
+  border-radius: 999px;
+  min-height: 4px;
+}
+
+scale.wxb-scale highlight {
+  background-color: #b9dcff;
+  background-image: linear-gradient(90deg, #8fc3fb, #d2ebff);
+  border-radius: 999px;
+}
+
+scale.wxb-scale slider {
+  background-color: #f7fbff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 4px rgba(158, 196, 255, 0.10),
+              0 1px 5px rgba(0, 0, 0, 0.45);
+}
+
+switch,
+switch.wxb-switch {
+  background-color: rgba(24, 34, 56, 0.94);
+  background-image: none;
+  border: 1px solid rgba(192, 211, 250, 0.19);
+  border-radius: 999px;
+  min-width: 37px;
+  min-height: 21px;
+  padding: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
+}
+
+switch:checked,
+switch.wxb-switch:checked {
+  background-color: #a6cdf2;
+  background-image: linear-gradient(180deg, #c3e2ff, #93c4f2);
+  border-color: rgba(225, 242, 255, 0.64);
+  box-shadow: 0 0 12px rgba(130, 186, 246, 0.20);
+}
+
+switch > slider,
+switch slider,
+switch.wxb-switch > slider {
+  background-color: #f7fbff;
+  border: none;
+  border-radius: 999px;
+  min-width: 17px;
+  min-height: 17px;
+  margin: 1px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.32);
+}
+
+/* ------------------------------------------------------------------ panels */
+
+expander-widget.wxb-expander {
+  background-color: rgba(9, 12, 24, 0.54);
+  background-image: none;
+  border: 1px solid rgba(199, 216, 251, 0.12);
+  border-radius: 9px;
+  padding: 7px 10px;
+}
+
+.wxb-advanced {
+  background-color: rgba(5, 8, 18, 0.32);
+  border: 1px solid rgba(197, 214, 249, 0.10);
+  border-radius: 9px;
+  padding: 5px 8px;
+}
+
+expander-widget.wxb-expander box.title,
+expander-widget.wxb-expander > box > box.title {
+  color: #dfe8f8;
+  font-size: 10.5px;
+  font-weight: 550;
+}
+
+expander-widget.wxb-expander expander {
+  color: #b7c8e5;
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------- small surfaces */
+
+.wxb-divider {
+  background-color: rgba(195, 213, 250, 0.10);
+  min-height: 1px;
+}
+
+.wxb-row {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(195, 213, 250, 0.09);
+}
+
+.wxb-fold {
+  background-color: rgba(10, 13, 27, 0.34);
+  border: 1px solid rgba(198, 215, 250, 0.12);
+  border-radius: 9px;
+}
+
+.wxb-side-kicker {
+  color: #77839d;
+  font-size: 7.5px;
+  font-weight: 650;
+  letter-spacing: 1.3px;
+  margin: 9px 9px 3px;
+}
+
+.wxb-mono {
+  color: #aebbd2;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+
+/* --------------------------------------------------- automation status row */
+
+.wxb-automation-status {
+  padding: 9px 14px;
+  min-height: 48px;
+}
+
+.wxb-automation-status .wxb-status {
+  min-width: 44px;
+}
+
+.wxb-automation-status button.wxb-primary {
+  min-height: 31px;
+  padding: 5px 15px;
+}
+
+/* The hotkey row echoes the wide Mouse 4 capture field in Nexus. */
+
+.wxb-hotkey-row {
+  padding-top: 1px;
+}
+
+.wxb-hotkey-pill {
+  background-color: rgba(5, 8, 18, 0.56);
+  border: 1px solid rgba(197, 214, 249, 0.18);
+  border-radius: 7px;
+  color: #e8effc;
+  font-family: "Inter", "Inter Display", sans-serif;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 9px 14px;
+  min-height: 31px;
+}
+
+.wxb-advanced-card {
+  padding: 8px 10px;
+}
+
+.wxb-advanced-card expander-widget.wxb-expander {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  padding: 3px 5px;
+}
+
+.wxb-advanced-card expander-widget.wxb-expander box.title {
+  padding: 4px 2px;
+}
+
+.wxb-advanced-card expander-widget.wxb-expander box.title label {
+  font-size: 12px;
+  font-weight: 550;
+  color: #e4ebf8;
+}
+
+.wxb-advanced-card .wxb-side-kicker {
+  margin-top: 3px;
+  margin-bottom: 1px;
+}
+
+.wxb-advanced-card .wxb-mini-field {
+  background-color: rgba(6, 9, 20, 0.34);
+  border: 1px solid rgba(199, 214, 250, 0.11);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.wxb-dot {
+  min-width: 6px;
+  min-height: 6px;
+}
+
+.wxb-dot.live {
+  background-color: #c4e1ff;
+  box-shadow: 0 0 8px rgba(170, 208, 255, 0.62);
+}
+
+.wxb-dot.good {
+  background-color: #9fd7c6;
+}
+
+textview.wxb-code,
+textview.wxb-code text {
+  background-color: rgba(5, 8, 18, 0.62);
+  color: #dce8fa;
+}
+
+.wxb-code {
+  border-color: rgba(197, 214, 249, 0.14);
+  border-radius: 8px;
+}
+
+/* The sidebar and the page are deliberately separate pans.  This rule lives
+   in the gutter between them so the split stays legible even over a dark
+   patch of the backdrop. */
+.wxb-pane-rule {
+  background-color: rgba(214, 229, 255, 0.52);
+  border-radius: 999px;
+  min-width: 2px;
+  box-shadow: 0 0 16px rgba(169, 198, 255, 0.22);
+}
+
+/* The gutter rule is the seam between the two pans; a second left border on
+   the page pane would read as a double divider. */
+.wxb-main-panel {
+  border-left: none;
+}

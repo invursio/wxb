@@ -1,0 +1,857 @@
+/* --------------------------------------------------------------------------
+   Monochrome
+   Layered graphite, soft white and white-alpha only.  Loaded after the studio
+   sheet when Settings > Appearance > Monochrome is on.  Every channel is
+   neutral: charcoal surfaces, hairline borders and a soft-white signal.
+   -------------------------------------------------------------------------- */
+
+.wxb-backdrop {
+  opacity: 0;
+}
+
+window.wxb .wxb-main-panel {
+  border-left: none;
+  border-color: rgba(255, 255, 255, 0.21);
+  box-shadow: none;
+}
+
+/* ------------------------------------------------------------ sidebar shell */
+
+window.wxb .wxb-side-head,
+window.wxb .wxb-side-footer {
+  background-color: transparent;
+  background-image: none;
+}
+
+.wxb-side-footer {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+.wxb-side-rule {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+window.wxb .wxb-nav image,
+window.wxb .wxb-nav.active image,
+window.wxb .wxb-nav-title,
+window.wxb .wxb-nav-secondary .wxb-nav-title {
+  color: inherit;
+}
+
+window.wxb .wxb-accent,
+window.wxb .wxb-page-icon-glyph,
+window.wxb .wxb-advanced-card expander-widget.wxb-expander box.title,
+window.wxb .wxb-advanced-card expander-widget.wxb-expander box.title label {
+  color: #eeeeee;
+}
+
+window.wxb button.wxb-swatch:disabled {
+  opacity: 0.42;
+}
+
+window.wxb switch:disabled {
+  opacity: 0.40;
+}
+/* --------------------------------------------------------------- surfaces */
+
+window.wxb,
+window.wxb-secondary,
+window.wxb-onboard-window,
+window.wxb-dialog,
+dialog.wxb-about-dialog,
+window.wxb-about-dialog,
+.wxb-root {
+  background-color: #0e0e0e;
+  background-image: linear-gradient(145deg, #111111 0%, #0c0c0c 55%, #131313 100%);
+  color: #f1f1f1;
+}
+
+window.wxb .wxb-main-panel,
+.wxb-main-panel toolbarview,
+.wxb-main-panel scrolledwindow,
+.wxb-main-panel viewport,
+.wxb-main-panel stack {
+  background-color: #0e0e0e;
+  background-image: none;
+}
+
+window.wxb .wxb-sidebar {
+  background-color: #121212;
+  background-image: linear-gradient(165deg, #181818 0%, #101010 100%);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+window.wxb .wxb-header,
+window.wxb headerbar.wxb-header {
+  background-color: #101010;
+  background-image: linear-gradient(180deg, #151515 0%, #0f0f0f 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+window.wxb .wxb-side-title {
+  color: #f5f5f5;
+}
+
+window.wxb .wxb-page-title {
+  color: #f3f3f3;
+}
+
+window.wxb .wxb-section-title,
+window.wxb .wxb-empty-title,
+window.wxb .wxb-metric-value,
+window.wxb .wxb-hotkey-pill,
+window.wxb .wxb-command-name {
+  color: #ededed;
+}
+
+window.wxb .wxb-side-sub,
+window.wxb .wxb-page-sub,
+window.wxb .wxb-section-sub,
+window.wxb .wxb-metric-sub,
+window.wxb .wxb-mouse-axis,
+window.wxb .wxb-empty-sub {
+  color: #a3a3a3;
+}
+
+window.wxb .wxb-side-version,
+window.wxb .wxb-header-page,
+window.wxb .wxb-slash,
+window.wxb .wxb-side-kicker,
+window.wxb .wxb-command-sub,
+window.wxb .wxb-command-footer {
+  color: #8b8b8b;
+}
+
+window.wxb .wxb-label,
+window.wxb .wxb-mouse-title,
+window.wxb .wxb-row label,
+window.wxb .wxb-shortcut-row label {
+  color: #c3c3c3;
+}
+
+window.wxb .wxb-hint,
+window.wxb .wxb-header-kicker,
+window.wxb .wxb-eyebrow {
+  color: #969696;
+}
+
+window.wxb .wxb-command-key {
+  color: #b6b6b6;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+window.wxb .wxb-nav {
+  color: #adadad;
+}
+
+window.wxb .wxb-nav:hover,
+window.wxb .wxb-nav:focus {
+  background-color: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.09);
+  color: #f1f1f1;
+}
+
+window.wxb .wxb-nav.active,
+window.wxb button.wxb-nav.active:focus {
+  background-color: #232323;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.06),
+                                      rgba(255, 255, 255, 0));
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f5f5f5;
+  box-shadow: inset 3px 0 0 #d6d6d6;
+}
+
+window.wxb button.wxb-side-collapse {
+  color: #a3a3a3;
+}
+
+window.wxb button.wxb-side-collapse:hover,
+window.wxb .wxb-icon:hover,
+window.wxb .wxb-main-panel windowcontrols button:hover {
+  background-color: #1d1d1d;
+  color: #f1f1f1;
+}
+
+window.wxb .wxb-header-pill,
+window.wxb .wxb-icon,
+window.wxb .wxb-main-panel windowcontrols button,
+window.wxb .wxb-main-panel windowcontrols button.close {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.11);
+  color: #a8a8a8;
+}
+
+window.wxb .wxb-header-pill:hover {
+  background-color: #1d1d1d;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #f2f2f2;
+}
+
+window.wxb .wxb-main-panel windowcontrols button.close:hover {
+  background-color: #2a2a2a;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #f5f5f5;
+}
+
+window.wxb button.wxb-starter {
+  background-color: #181818;
+  border-color: rgba(255, 255, 255, 0.13);
+  color: #ededed;
+}
+
+window.wxb button.wxb-starter:hover {
+  background-color: #232323;
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #f2f2f2;
+}
+
+window.wxb .wxb-mouse-panel {
+  background-color: #161616;
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+window.wxb .wxb-mouse-field {
+  background-color: #111111;
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+window.wxb .wxb-mouse-value {
+  color: #f1f1f1;
+}
+
+.wxb-pane-rule {
+  background-color: rgba(255, 255, 255, 0.13);
+  box-shadow: none;
+}
+
+window.wxb .wxb-page-icon {
+  background-color: #181818;
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+window.wxb .wxb-card,
+window.wxb .wxb-card .wxb-card,
+window.wxb .wxb-card-flat,
+window.wxb .wxb-card-accent,
+window.wxb .wxb-status-bar,
+window.wxb .wxb-fold,
+window.wxb .wxb-advanced,
+window.wxb .wxb-advanced-card,
+window.wxb .wxb-advanced-card .wxb-mini-field,
+window.wxb expander-widget.wxb-expander {
+  background-color: #171717;
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035),
+              0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+window.wxb .wxb-card:hover,
+window.wxb .wxb-card .wxb-card:hover {
+  background-color: #1c1c1c;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045),
+              0 10px 28px rgba(0, 0, 0, 0.16);
+}
+
+.wxb-alt-options {
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.wxb-alt-row,
+.wxb-fold-card {
+  background-color: #171717;
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+.wxb-alt-row:hover {
+  background-color: #1c1c1c;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.wxb-alt-name,
+.wxb-fold-title {
+  color: #ededed;
+}
+
+.wxb-fold-sub {
+  color: #8b8b8b;
+}
+
+window.wxb .wxb-status,
+window.wxb .wxb-pill {
+  background-color: #222222;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ededed;
+}
+
+window.wxb .wxb-status.live,
+window.wxb .wxb-status.good,
+window.wxb .wxb-status.bad {
+  background-color: #2a2a2a;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #f5f5f5;
+}
+
+window.wxb .wxb-dot,
+.wxb-dot {
+  background-color: #8b8b8b;
+}
+
+window.wxb .wxb-dot.live,
+window.wxb .wxb-dot.good,
+window.wxb .wxb-dot.bad {
+  background-color: #e0e0e0;
+}
+
+.wxb-dim {
+  color: #8b8b8b;
+}
+
+.wxb-mono {
+  color: #a3a3a3;
+}
+
+separator {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+window.wxb .wxb-divider {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+window.wxb .wxb-row {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+window.wxb .wxb-hotkey-pill {
+  background-color: #1b1b1b;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+window.wxb .wxb-advanced-card expander-widget.wxb-expander expander,
+window.wxb .wxb-advanced-card .wxb-side-kicker {
+  color: #b3b3b3;
+}
+
+button.wxb-primary {
+  background-color: #dedede;
+  background-image: linear-gradient(180deg, #ececec 0%, #d6d6d6 100%);
+  border-color: #ededed;
+  color: #101010;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+button.wxb-primary:hover {
+  background-color: #f0f0f0;
+  background-image: linear-gradient(180deg, #fafafa 0%, #e5e5e5 100%);
+  border-color: #f2f2f2;
+  color: #0c0c0c;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.10);
+}
+
+button.wxb-primary:active {
+  background-color: #c9c9c9;
+  background-image: none;
+  color: #0c0c0c;
+  box-shadow: none;
+}
+
+button.wxb-primary:disabled,
+button.wxb-primary:disabled:hover,
+button.wxb-primary:disabled:active {
+  background-color: #171717;
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.09);
+  color: #666666;
+}
+
+window.wxb button.wxb-ghost,
+window.wxb button.wxb-danger {
+  background-color: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e9e9e9;
+}
+
+window.wxb button.wxb-ghost:hover,
+window.wxb button.wxb-danger:hover {
+  background-color: #252525;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #f2f2f2;
+}
+
+window.wxb button.wxb-danger {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+window.wxb button.wxb-quiet {
+  background-color: transparent;
+  border-color: transparent;
+  color: #adadad;
+}
+
+window.wxb button.wxb-quiet:hover {
+  background-color: #222222;
+  color: #f2f2f2;
+}
+
+window.wxb button.wxb-privacy-on {
+  background-color: #dedede;
+  border-color: #ededed;
+  color: #101010;
+}
+
+window.wxb button.wxb-swatch,
+window.wxb button.wxb-swatch.selected {
+  background-color: #181818;
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+window.wxb button.wxb-swatch.selected {
+  background-color: #e4e4e4;
+  border-color: #f0f0f0;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+window.wxb button.wxb-icon {
+  background-color: transparent;
+  color: #a0a0a0;
+}
+
+window.wxb entry,
+window.wxb entry.wxb-entry,
+window.wxb spinbutton,
+window.wxb spinbutton.wxb-spin,
+window.wxb dropdown,
+window.wxb dropdown.wxb-drop,
+window.wxb textview.wxb-code,
+window.wxb textview.wxb-code text {
+  background-color: #151515;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f2f2f2;
+}
+
+window.wxb entry > text,
+window.wxb spinbutton entry,
+window.wxb spinbutton text {
+  color: #f2f2f2;
+}
+
+window.wxb entry:focus,
+window.wxb entry:focus-within,
+window.wxb spinbutton:focus-within,
+window.wxb dropdown:focus-within {
+  border-color: #c9c9c9;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+window.wxb dropdown > button,
+window.wxb dropdown button {
+  color: #f2f2f2;
+}
+
+window.wxb spinbutton > button {
+  color: #b0b0b0;
+}
+
+window.wxb spinbutton > button:hover {
+  background-color: #2a2a2a;
+  color: #f2f2f2;
+}
+
+window.wxb scale.wxb-scale trough {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+window.wxb scale.wxb-scale highlight {
+  background-color: #d2d2d2;
+  background-image: none;
+}
+
+window.wxb scale.wxb-scale slider {
+  background-color: #e8e8e8;
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.10);
+}
+
+window.wxb switch,
+window.wxb switch.wxb-switch {
+  background-color: #303030;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+window.wxb switch:checked,
+window.wxb switch.wxb-switch:checked {
+  background-color: #d6d6d6;
+  background-image: none;
+  border-color: #dedede;
+  box-shadow: none;
+}
+
+window.wxb switch > slider,
+window.wxb switch slider,
+window.wxb switch.wxb-switch > slider {
+  background-color: #e8e8e8;
+  border-color: #111111;
+}
+
+window.wxb switch:checked > slider,
+window.wxb switch:checked slider,
+window.wxb switch.wxb-switch:checked > slider {
+  background-color: #111111;
+  border-color: #111111;
+}
+
+/* ---------------------------------------------------------- command palette */
+
+.wxb-cmd-scrim {
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+.wxb-command {
+  background-color: #171717;
+  background-image: linear-gradient(145deg, #1c1c1c 0%, #121212 100%);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.62),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.wxb-command entry,
+entry.wxb-cmd-entry,
+entry.wxb-cmd-entry:focus,
+entry.wxb-cmd-entry:focus-within {
+  background-color: #171717;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  color: #f2f2f2;
+}
+
+.wxb-command entry:focus,
+entry.wxb-cmd-entry:focus,
+entry.wxb-cmd-entry:focus-within,
+entry.wxb-cmd-entry:focus > text,
+entry.wxb-cmd-entry:focus-within > text {
+  border-bottom-color: #d0d0d0;
+}
+
+.wxb-command row:hover,
+.wxb-command row:selected {
+  background-color: #272727;
+  color: #f5f5f5;
+}
+
+.wxb-command row:hover .wxb-command-name,
+.wxb-command row:selected .wxb-command-name {
+  color: #f5f5f5;
+}
+
+.wxb-command row:hover .wxb-command-sub,
+.wxb-command row:selected .wxb-command-sub,
+.wxb-command row:hover .wxb-command-key,
+.wxb-command row:selected .wxb-command-key {
+  color: #c4c4c4;
+}
+
+.wxb-command-footer {
+  border-top-color: rgba(255, 255, 255, 0.09);
+}
+
+.wxb-empty {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.wxb-avatar {
+  background-color: #e0e0e0;
+  color: #111111;
+}
+
+/* ---------------------------------------------------------- dialogs / sheets */
+
+window.wxb-secondary,
+window.wxb-onboard-window,
+window.wxb-dialog {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.48);
+}
+
+.wxb-onboard-art,
+.wxb-onboard-pane,
+.wxb-hotkey-body {
+  background-color: #131313;
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+.wxb-onboard-title {
+  color: #f1f1f1;
+}
+
+.wxb-onboard-body {
+  color: #a3a3a3;
+}
+
+.wxb-onboard-step,
+.wxb-version {
+  color: #8b8b8b;
+}
+
+.wxb-onboard-art .wxb-side-title,
+.wxb-side-title {
+  color: #f5f5f5;
+}
+
+.wxb-onboard-art .wxb-side-kicker,
+.wxb-eyebrow {
+  color: #8b8b8b;
+}
+
+.wxb-onboard-dot {
+  background-color: #1c1c1c;
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.wxb-onboard-dot.active {
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+
+window.wxb-dialog .message-area,
+window.wxb-dialog .response-area,
+window.wxb-dialog actionbar,
+dialog.wxb-about-dialog headerbar,
+window.wxb-about-dialog headerbar {
+  background-color: #121212;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+window.wxb-dialog .message-area .title-2,
+window.wxb-dialog .heading,
+window.wxb-dialog .title,
+dialog.wxb-about-dialog .title-1,
+dialog.wxb-about-dialog .title,
+dialog.wxb-about-dialog .name,
+window.wxb-about-dialog .title,
+window.wxb-about-dialog .name {
+  color: #f1f1f1;
+}
+
+window.wxb-dialog .message-area label,
+window.wxb-dialog .body,
+window.wxb-dialog .description,
+window.wxb-dialog label,
+dialog.wxb-about-dialog label,
+dialog.wxb-about-dialog .body,
+window.wxb-about-dialog label,
+window.wxb-about-dialog .description {
+  color: #a8a8a8;
+}
+
+window.wxb-dialog button,
+window.wxb-dialog .response-area button,
+window.wxb-dialog .response-area button.flat,
+window.wxb-dialog .response-area button.text-button,
+dialog.wxb-about-dialog button,
+window.wxb-about-dialog button {
+  background-color: #1c1c1c;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #ededed;
+}
+
+window.wxb-dialog button:hover,
+window.wxb-dialog .response-area button:hover,
+window.wxb-dialog .response-area button.flat:hover,
+window.wxb-dialog .response-area button.text-button:hover,
+dialog.wxb-about-dialog button:hover,
+window.wxb-about-dialog button:hover {
+  background-color: #282828;
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #f2f2f2;
+}
+
+window.wxb-dialog button.suggested-action,
+window.wxb-dialog .response-area button.default {
+  background-color: #dedede;
+  border-color: #ededed;
+  color: #101010;
+}
+
+window.wxb-dialog button.destructive-action,
+window.wxb-dialog .response-area button.destructive,
+window.wxb-dialog .response-area button.destructive-action {
+  background-color: #181818;
+  border-color: rgba(255, 255, 255, 0.26);
+  color: #f0f0f0;
+}
+
+window.wxb-dialog .response-area separator {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+dialog.wxb-about-dialog,
+dialog.wxb-about-dialog sheet.background,
+dialog.wxb-about-dialog sheet,
+window.wxb-about-dialog sheet {
+  background-color: #181818;
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.48);
+}
+
+dialog.wxb-about-dialog .app-version,
+window.wxb-about-dialog .app-version {
+  background-color: #1f1f1f;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ededed;
+}
+
+dialog.wxb-about-dialog textview,
+window.wxb-about-dialog textview {
+  color: #a8a8a8;
+}
+
+/* ------------------------------------------------------ popovers / tooltips */
+
+tooltip,
+tooltip.background,
+popover.background,
+popover.background > contents,
+popover.menu.background > contents,
+popover > contents,
+popover.menu > contents {
+  background-color: #1d1d1d;
+  background-image: none;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f0f0f0;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.42);
+}
+
+popover.menu modelbutton,
+popover listview > row {
+  color: #ededed;
+}
+
+popover.menu modelbutton:hover,
+popover.menu modelbutton:focus,
+popover listview > row:hover,
+popover listview > row:selected {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+}
+
+popover.menu separator {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+tooltip label,
+popover label {
+  color: #f0f0f0;
+}
+
+popover row:hover,
+popover row:selected,
+popover modelbutton:hover,
+popover modelbutton:selected {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+}
+
+/* ----------------------------------------------------------------- scrollbar */
+
+scrollbar slider {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+scrollbar slider:hover {
+  background-color: rgba(255, 255, 255, 0.34);
+}
+
+window.wxb toast,
+window.wxb toast.background,
+window.wxb .wxb-toast {
+  background-color: #1d1d1d;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f2f2f2;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.30);
+}
+
+window.wxb toast label,
+window.wxb .wxb-toast label {
+  color: #f2f2f2;
+}
+
+window.wxb toast button,
+window.wxb .wxb-toast button {
+  background-color: #262626;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ededed;
+}
+
+window.wxb toast button:hover,
+window.wxb .wxb-toast button:hover {
+  background-color: #303030;
+  border-color: rgba(255, 255, 255, 0.20);
+  color: #f2f2f2;
+}
+
+window.wxb,
+window.wxb-secondary,
+window.wxb-onboard-window,
+window.wxb-dialog,
+dialog.wxb-about-dialog,
+window.wxb-about-dialog {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  outline: none;
+}
+
+dialog.wxb-about-dialog button:focus,
+window.wxb-about-dialog button:focus {
+  background-color: #222222;
+  color: #f2f2f2;
+  outline: 1px solid rgba(255, 255, 255, 0.28);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+
+dialog.wxb-about-dialog button.close,
+window.wxb-about-dialog button.close,
+dialog.wxb-about-dialog .titlebar button,
+window.wxb-about-dialog .titlebar button,
+dialog.wxb-about-dialog .titlebar button.close,
+window.wxb-about-dialog .titlebar button.close,
+dialog.wxb-about-dialog .windowcontrols button,
+window.wxb-about-dialog .windowcontrols button,
+dialog.wxb-about-dialog headerbar button.close,
+window.wxb-about-dialog headerbar button.close {
+  background-color: #1c1c1c;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f0f0f0;
+  outline: none;
+}
+
+dialog.wxb-about-dialog button.close:hover,
+window.wxb-about-dialog button.close:hover,
+dialog.wxb-about-dialog .titlebar button:hover,
+window.wxb-about-dialog .titlebar button:hover,
+dialog.wxb-about-dialog .titlebar button.close:hover,
+window.wxb-about-dialog .titlebar button.close:hover,
+dialog.wxb-about-dialog .windowcontrols button:hover,
+window.wxb-about-dialog .windowcontrols button:hover,
+dialog.wxb-about-dialog headerbar button.close:hover,
+window.wxb-about-dialog headerbar button.close:hover {
+  background-color: #282828;
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #f2f2f2;
+}
+
+window.wxb .wxb-good {
+  color: #dedede;
+}
+
+window.wxb .wxb-bad {
+  color: #f2f2f2;
+  text-decoration-line: underline;
+}

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=WXB Studio
+GenericName=Roblox input and alt control room
+Comment=Autoclicker, rotation macro and SOCD cleaner in a quiet GTK4 studio
+Exec=wxb
+Icon=io.github.wxb.Studio
+Terminal=false
+Categories=Utility;Accessibility;
+StartupNotify=false
+StartupWMClass=io.github.wxb.Studio
+Keywords=click;autoclick;macro;rotation;socd;hitbox;sober;cordial;hotkey;f6;f7;f8;

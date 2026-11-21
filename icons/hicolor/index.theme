@@ -1,0 +1,9 @@
+[Icon Theme]
+Name=hicolor
+Comment=WXB Studio local icons
+Directories=scalable/apps
+
+[scalable/apps]
+Size=128
+Type=Scalable
+Context=Applications
